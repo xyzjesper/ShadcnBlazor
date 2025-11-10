@@ -1,0 +1,35 @@
+﻿@inherits ShadcnBase
+
+<div data-slot="empty-icon"
+     data-variant="@Variant.ToString().ToLowerInvariant()"
+     class="@Classes"
+     @attributes="Props">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public EmptyMediaVariant Variant { get; set; } = EmptyMediaVariant.Default;
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "flex shrink-0 items-center justify-center mb-2 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+            GetVariantClasses(),
+            ClassName
+        );
+    }
+
+    private string GetVariantClasses()
+    {
+        return Variant switch
+        {
+            EmptyMediaVariant.Default => "bg-transparent",
+            EmptyMediaVariant.Icon => "bg-muted text-foreground flex size-10 shrink-0 items-center justify-center rounded-lg [&_svg:not([class*='size-'])]:size-6",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+}

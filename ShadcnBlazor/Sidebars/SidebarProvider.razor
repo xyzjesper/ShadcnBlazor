@@ -1,0 +1,12 @@
+<div class="group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full"
+     style="--sidebar-width: @SidebarWidth; --sidebar-width-icon: @SidebarWidthIcon">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private string SidebarWidth = "16rem";
+    private string SidebarWidthIcon = "3rem";
+}

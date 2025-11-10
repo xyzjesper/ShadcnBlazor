@@ -1,0 +1,45 @@
+@import url("https://cdn.jsdelivr.net/npm/lucide-static/font/lucide.css") layer(base);
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=fallback') layer(base);
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=fallback') layer(base);
+
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./theme3.css";
+
+@import "./extras/buttons.css";
+@import "./extras/scrollbar.css";
+
+@import "./components/input.css";
+@import "./components/buttons.css";
+@import "./components/button-group.css";
+@import "./components/separator.css";
+@import "./components/empty.css";
+@import "./components/label.css";
+@import "./components/card.css";
+@import "./components/dialog.css";
+@import "./components/checkbox.css";
+@import "./components/select.css";
+@import "./components/sidebar.css";
+
+@source "../**/*.razor";
+@source "../**/*.cs";
+@source "../**/*.html";
+
+@source "../../ShadcnBlazor/**/*.razor";
+@source "../../ShadcnBlazor/**/*.cs";
+@source "../../ShadcnBlazor/**/*.html";
+
+@custom-variant dark (&:is(.dark *));
+
+#blazor-error-ui {
+    display: none;
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+}

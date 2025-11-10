@@ -1,0 +1,23 @@
+﻿@using ShadcnBlazor.Separators
+
+@inherits ShadcnBase
+
+<Separator Orientation="Orientation"
+           ClassName="@Classes"
+           data-slot="button-group-separator"
+           @attributes="Props" />
+
+@code
+{
+    [Parameter] public SeparatorOrientation Orientation { get; set; } = SeparatorOrientation.Vertical;
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "bg-input relative !m-0 self-stretch data-[orientation=vertical]:h-auto",
+            ClassName
+        );
+    }
+}

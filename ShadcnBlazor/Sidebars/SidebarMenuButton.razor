@@ -1,0 +1,64 @@
+@inherits ShadcnBase
+
+@if (AsChild)
+{
+    @ChildContent.Invoke(Attributes)
+}
+else
+{
+    <button @attributes="Attributes">
+        @ChildContent.Invoke(null!)
+    </button>
+}
+
+@code
+{
+    [Parameter] public RenderFragment<Dictionary<string, object?>> ChildContent { get; set; }
+    [Parameter] public SidebarMenuButtonVariant Variant { get; set; } = SidebarMenuButtonVariant.Default;
+    [Parameter] public SidebarMenuButtonSize Size { get; set; } = SidebarMenuButtonSize.Default;
+    [Parameter] public bool IsActive { get; set; } = false;
+    [Parameter] public bool AsChild { get; set; } = false;
+
+    private readonly Dictionary<string, object?> Attributes = new();
+
+    protected override void OnParametersSet()
+    {
+        Attributes["data-slot"] = "sidebar-menu-button";
+        Attributes["data-sidebar"] = "menu-button";
+        Attributes["data-size"] = Size.ToString().ToLower();
+        Attributes["data-active"] = IsActive.ToString().ToLower();
+        Attributes["class"] = Cn(
+            "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
+            GetVariantClasses(),
+            GetSizeClasses(),
+            ClassName
+        );
+
+        if(Props == null)
+            return;
+        
+        foreach (var prop in Props)
+            Attributes[prop.Key] = prop.Value;
+    }
+
+    private string GetVariantClasses()
+    {
+        return Variant switch
+        {
+            SidebarMenuButtonVariant.Default => "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+            SidebarMenuButtonVariant.Outline => "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+
+    private string GetSizeClasses()
+    {
+        return Size switch
+        {
+            SidebarMenuButtonSize.Default => "h-8 text-sm",
+            SidebarMenuButtonSize.Sm => "h-7 text-xs",
+            SidebarMenuButtonSize.Lg => "h-12 text-sm group-data-[collapsible=icon]:p-0!",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+}

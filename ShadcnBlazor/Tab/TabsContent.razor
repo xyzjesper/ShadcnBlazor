@@ -1,0 +1,27 @@
+﻿@inherits ShadcnBase
+
+<div data-slot="tabs-content"
+     data-state="@(IsActive ? "active" : "inactive")"
+     class="@Classes"
+     @attributes="Props"
+     hidden="@IsActive">
+    @ChildContent
+</div>
+
+@code
+{
+    [CascadingParameter] public Tabs Tabs { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public string Value { get; set; } = "";
+    
+    private string? Classes;
+    private bool IsActive => Tabs.CurrentValue.Equals(Value, StringComparison.OrdinalIgnoreCase);
+    
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "flex-1 outline-none",
+            ClassName
+        );
+    }
+}

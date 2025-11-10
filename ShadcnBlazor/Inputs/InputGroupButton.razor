@@ -1,0 +1,41 @@
+﻿@using ShadcnBlazor.Buttons
+
+@inherits ShadcnBase
+
+<Button Type="@Type"
+        Variant="Variant"
+        ClassName="@Classes"
+        data-size="@Size.ToString().ToLowerInvariant()">
+    @ChildContent
+</Button>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public InputGroupButtonSize Size { get; set; } = InputGroupButtonSize.Xs;
+    [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Ghost;
+    [Parameter] public string Type { get; set; } = "button";
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "text-sm shadow-none flex gap-2 items-center",
+            GetSizeClasses(),
+            ClassName
+        );
+    }
+
+    private string GetSizeClasses()
+    {
+        return Size switch
+        {
+            InputGroupButtonSize.Xs => "h-6 gap-1 px-2 rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-3.5 has-[>svg]:px-2",
+            InputGroupButtonSize.Sm => "h-8 px-2.5 gap-1.5 rounded-md has-[>svg]:px-2.5",
+            InputGroupButtonSize.IconXs => "size-6 rounded-[calc(var(--radius)-5px)] p-0 has-[>svg]:p-0",
+            InputGroupButtonSize.IconSm => "size-8 p-0 has-[>svg]:p-0",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+}

@@ -1,0 +1,20 @@
+﻿@inherits ShadcnBase
+
+<div data-slot="kbd-group" class="@Classes" @attributes="Props">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "inline-flex items-center gap-1",
+            ClassName
+        );
+    }
+}

@@ -1,0 +1,28 @@
+<button @onclick="ToggleCheckedAsync"
+        data-state="@(IsChecked ? "checked" : "unchecked")"
+        aria-checked="@(IsChecked ? "true" : "false")"
+        class="checkbox @CssClasses" @attributes="AdditionalAttributes">
+    @if (IsChecked)
+    {
+        <span class="checkbox-indicator">
+            <i class="icon-check text-xs"></i>
+        </span>
+    }
+</button>
+
+@code
+{
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    
+    [Parameter] public bool IsChecked { get; set; }
+    [Parameter] public string? CssClasses { get; set; }
+
+    private async Task ToggleCheckedAsync()
+    {
+        Console.WriteLine("Checkbox click");
+        
+        IsChecked = !IsChecked;
+        await InvokeAsync(StateHasChanged);
+    }
+}

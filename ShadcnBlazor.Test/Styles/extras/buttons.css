@@ -1,0 +1,5 @@
+@layer utilities {
+    .btn:not([disabled]) {
+        @apply transition active:scale-95;
+    }
+}

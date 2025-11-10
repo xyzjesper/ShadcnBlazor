@@ -1,0 +1,14 @@
+@inherits ShadcnBase
+
+<ul
+    data-slot="sidebar-menu"
+    data-sidebar="menu"
+    class="@Cn("flex w-full min-w-0 flex-col gap-1", ClassName)"
+    @attributes="Props">
+    @ChildContent
+</ul>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}

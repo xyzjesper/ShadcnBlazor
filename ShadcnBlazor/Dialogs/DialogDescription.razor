@@ -1,0 +1,38 @@
+@inherits ShadcnBase
+
+@if (AsChild)
+{
+    @ChildContent.Invoke(Attributes)
+}
+else
+{
+    <p @attributes="Attributes">
+        @ChildContent.Invoke(null!)
+    </p>
+}
+
+@code
+{
+    [Parameter] public bool AsChild { get; set; } = false;
+    [Parameter] public RenderFragment<Dictionary<string, object?>> ChildContent { get; set; }
+
+    private Dictionary<string, object?> Attributes;
+
+    protected override void OnParametersSet()
+    {
+        Attributes = new();
+
+        Attributes["data-slot"] = "dialog-description";
+        
+        Attributes["class"] = Cn(
+            "text-muted-foreground text-sm",
+            ClassName
+        );
+        
+        if(Props == null)
+            return;
+
+        foreach (var prop in Props)
+            Attributes[prop.Key] = prop.Value;
+    }
+}

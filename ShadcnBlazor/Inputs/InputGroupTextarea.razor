@@ -1,0 +1,22 @@
+﻿@inherits ShadcnBase
+
+<TextareaField data-slot="input-group-control"
+               ClassName="@Classes"
+               @attributes="Props">
+    @ChildContent
+</TextareaField>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "flex-1 resize-none rounded-none border-0 bg-transparent py-3 shadow-none focus-visible:ring-0 dark:bg-transparent",
+            ClassName
+        );
+    }
+}

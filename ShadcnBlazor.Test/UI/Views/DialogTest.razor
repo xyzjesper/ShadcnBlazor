@@ -1,0 +1,63 @@
+@page "/dialog"
+
+<div class="mx-8 mt-8">
+    <button @onclick="ToggleAsync" class="btn btn-md btn-outline">Toggle</button>
+</div>
+
+@if (IsOpen)
+{
+    <div>
+        <div class="dialog-overlay" @onclick="CloseAsync" data-state="@(IsOpening ? "open" : "closed")"></div>
+        <div class="dialog-content sm:max-w-[425px]" data-state="@(IsOpening ? "open" : "closed")">
+            <div class="dialog-header">
+                <div class="dialog-title">Edit profile</div>
+                <div class="dialog-description">
+                    Make changes to your profile here. Click save when you&apos;re
+                    done.
+                </div>
+            </div>
+            <div class="grid gap-4">
+                <div class="grid gap-3">
+                    <label class="label" for="name-1">Name</label>
+                    <input class="input" id="name-1" name="name" value="Pedro Duarte"/>
+                </div>
+                <div class="grid gap-3">
+                    <label class="label" for="username-1">Username</label>
+                    <input class="input" id="username-1" name="username" value="peduarte"/>
+                </div>
+            </div>
+            <div class="dialog-footer">
+                <button @onclick="CloseAsync" class="btn btn-md btn-outline" variant="outline">Cancel</button>
+                <button class="btn btn-md btn-primary" type="submit">Save changes</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    private bool IsOpening = false;
+    private bool IsOpen = false;
+
+    private async Task ToggleAsync()
+    {
+        IsOpening = !IsOpening;
+        await InvokeAsync(StateHasChanged);
+
+        await Task.Delay(50);
+
+        IsOpen = !IsOpen;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task CloseAsync()
+    {
+        IsOpening = false;
+        await InvokeAsync(StateHasChanged);
+        
+        await Task.Delay(50);
+
+        IsOpen = false;
+        await InvokeAsync(StateHasChanged);
+    }
+}

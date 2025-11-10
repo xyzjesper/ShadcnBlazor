@@ -1,0 +1,21 @@
+﻿@inherits ShadcnBase
+
+<div data-slot="skeleton"
+     class="@Classes">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "bg-accent animate-pulse rounded-md",
+            ClassName
+        );
+    }
+}

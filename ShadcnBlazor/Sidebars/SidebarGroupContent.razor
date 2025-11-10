@@ -1,0 +1,14 @@
+@inherits ShadcnBase
+
+<div
+    data-slot="sidebar-group-content"
+    data-sidebar="group-content"
+    class="@Cn("w-full text-sm", ClassName)"
+    @attributes="Props">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}

@@ -1,0 +1,18 @@
+﻿@inherits ShadcnBase
+
+<div data-slot="empty-title"
+     class="@Classes">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn("text-lg font-medium tracking-tight", ClassName);
+    }
+}

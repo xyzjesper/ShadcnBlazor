@@ -1,0 +1,38 @@
+﻿@inherits ShadcnBase
+
+<div data-slot="tabs"
+     class="@Classes"
+     @attributes="Props">
+    <CascadingValue Value="this" IsFixed="true">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public string DefaultValue { get; set; } = "";
+
+    public string CurrentValue { get; set; }
+    
+    private string? Classes;
+
+    protected override void OnInitialized()
+    {
+        CurrentValue = DefaultValue;
+    }
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "flex flex-col gap-2",
+            ClassName
+        );
+    }
+
+    public async Task SwitchAsync(string tabValue)
+    {
+        CurrentValue = tabValue;
+        await InvokeAsync(StateHasChanged);
+    }
+}

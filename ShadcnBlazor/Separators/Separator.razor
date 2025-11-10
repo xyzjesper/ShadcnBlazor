@@ -1,0 +1,20 @@
+@inherits ShadcnBase
+
+<div
+    data-slot="separator"
+    decorative="@Decorative"
+    data-orientation="@Orientation.ToString().ToLower()"
+    class="@Cn(
+               "bg-border shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px",
+               ClassName
+           )"
+    @attributes="Props">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool Decorative { get; set; } = true;
+    [Parameter] public SeparatorOrientation Orientation { get; set; } = SeparatorOrientation.Horizontal;
+}

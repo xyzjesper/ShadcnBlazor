@@ -1,0 +1,35 @@
+﻿@inherits ShadcnBase
+
+<div data-slot="alert"
+     role="alert"
+     class="@Classes"
+     @attributes="Props">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter] public AlertVariant Variant { get; set; } = AlertVariant.Default;
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "relative w-full rounded-lg border px-4 py-3 text-sm grid has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-0.5 items-start [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current",
+            GetVariantClasses(),
+            ClassName
+        );
+    }
+
+    private string GetVariantClasses()
+    {
+        return Variant switch
+        {
+            AlertVariant.Default => "bg-card text-card-foreground",
+            AlertVariant.Destructive => "text-destructive bg-card [&>svg]:text-current *:data-[slot=alert-description]:text-destructive/90",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+}

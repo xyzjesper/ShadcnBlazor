@@ -1,0 +1,22 @@
+﻿@inherits ShadcnBase
+
+<div data-slot="card"
+     class="@Classes"
+     @attributes="Props">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
+            ClassName
+        );
+    }
+}

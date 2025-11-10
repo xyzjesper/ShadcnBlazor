@@ -1,0 +1,19 @@
+﻿@inherits ShadcnBase
+
+<div data-slot="card-footer"
+     class="@Classes"
+     @attributes="Props">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn("flex items-center px-6 [.border-t]:pt-6", ClassName);
+    }
+}

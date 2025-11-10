@@ -1,0 +1,14 @@
+@using TailwindMerge
+
+@inject TwMerge Merge
+
+@code
+{
+    [Parameter] public string ClassName { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? Props { get; set; }
+
+    protected string? Cn(params string?[] classes)
+        => Merge.Merge(classes);
+}
