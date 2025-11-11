@@ -1,4 +1,26 @@
 ﻿window.testy = {
+
+    getBoundingBox: function (element) {
+        console.log(element);
+        return element.getBoundingClientRect();
+    },
+
+    requestAnimationFrameAsync: async function () {
+        return new Promise(resolve =>
+        {
+            requestAnimationFrame(() => {
+                resolve();
+            })
+        })
+    },
+    
+    getViewport: function () {
+        return {
+            height: window.innerHeight,
+            width: window.innerWidth
+        }
+    },
+    
     positionDropdown: function (dropdown, clientX, clientY) {
         dropdown.style.display = "block"; // make visible first
         dropdown.style.left = "0px";

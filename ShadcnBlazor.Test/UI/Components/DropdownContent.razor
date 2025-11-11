@@ -1,16 +1,17 @@
 ﻿@using Microsoft.AspNetCore.Components.Sections
 @inject IJSRuntime JsRuntime
+@inject PositionService PositionService
 
 @if (Dropdown.IsOpen)
 {
     <div class="fixed inset-0 z-50" @onclick="OnClickedOutside">
-    
+
     </div>
 }
 
 @if (MenuOpen)
 {
-    <div @ref="Reference" class="min-w-max z-50 hidden">
+    <div @ref="Reference" class="min-w-max z-50 fixed top-0 left-0" style="@PositionStyle">
         <div data-side="top" data-align="start" role="menu" aria-orientation="vertical"
              data-state="@(Dropdown.IsOpen ? "open" : "closed")"
              data-radix-menu-content="" dir="ltr"
@@ -20,8 +21,8 @@
             @ChildContent
         </div>
     </div>
-    
-    <SectionOutlet SectionName="@Dropdown.SubmenuOutletId" />
+
+    <SectionOutlet SectionName="@Dropdown.SubmenuOutletId"/>
 }
 
 @code
@@ -32,24 +33,32 @@
 
     private ElementReference Reference;
     private bool MenuOpen = false;
+    private string PositionStyle = "";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (Dropdown.IsOpen && MenuOpen)
-        {
-            await JsRuntime.InvokeVoidAsync("testy.positionDropdown", Reference, Dropdown.ClientX, Dropdown.ClientY);
-        }
-        
         if (Dropdown.IsOpen && !MenuOpen)
         {
             MenuOpen = true;
-            await InvokeAsync(StateHasChanged);
+            
+            await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
+            {
+                var newPosition = await PositionService.PositionAtWithinViewportAsync(
+                    Reference,
+                    Dropdown.ClientX,
+                    Dropdown.ClientY
+                );
+            
+                PositionStyle = $"transform: translate({newPosition.Item1}px, {newPosition.Item2}px)";
+
+                await InvokeAsync(StateHasChanged);
+            });
         }
 
         if (!Dropdown.IsOpen && MenuOpen)
         {
             await Task.Delay(100);
-            
+
             MenuOpen = false;
             await InvokeAsync(StateHasChanged);
         }
