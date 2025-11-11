@@ -1,0 +1,15 @@
+﻿@using ShadcnBlazor.Buttons
+
+<Button @onclick="Callback">
+    Trigger
+</Button>
+
+@code
+{
+    [CascadingParameter] public Dropdown Dropdown { get; set; }
+
+    private async Task Callback(MouseEventArgs obj)
+    {
+        await Dropdown.OpenAsync(obj.ClientX, obj.ClientY);
+    }
+}

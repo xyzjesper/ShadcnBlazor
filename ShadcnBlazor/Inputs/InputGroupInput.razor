@@ -1,9 +1,11 @@
 ﻿@inherits ShadcnBase
 
-@if (AsChild)
+@if (Slot != null)
 {
-    <InputField AsChild="true" @attributes="Attributes" Context="inputFieldAttrs">
-        @ChildContent.Invoke(inputFieldAttrs)
+    <InputField @attributes="Attributes" Context="inputFieldAttrs">
+        <Slot>
+            @Slot.Invoke(inputFieldAttrs)
+        </Slot>
     </InputField>
 }
 else
@@ -31,9 +33,8 @@ else
 
     private string _value;
     
-    
-    [Parameter] public bool AsChild { get; set; } = false;
-    [Parameter] public RenderFragment<Dictionary<string, object?>> ChildContent { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment<Dictionary<string, object?>>? Slot { get; set; }
 
     private Dictionary<string, object?> Attributes;
 

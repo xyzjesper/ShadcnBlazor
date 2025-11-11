@@ -1,0 +1,65 @@
+﻿@inherits ShadcnBase
+
+@if (Slot != null)
+{
+    @Slot.Invoke(Attributes)
+}
+else
+{
+    <div @attributes="Attributes">
+        @ChildContent
+    </div>
+}
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment<Dictionary<string, object?>>? Slot { get; set; }
+    [Parameter] public ItemSize Size { get; set; } = ItemSize.Default;
+    [Parameter] public ItemVariant Variant { get; set; } = ItemVariant.Default;
+
+    private Dictionary<string, object?> Attributes;
+
+    protected override void OnParametersSet()
+    {
+        Attributes = new();
+
+        Attributes["data-slot"] = "item";
+        Attributes["data-variant"] = Variant.ToString().ToLowerInvariant();
+        Attributes["data-size"] = Size.ToString().ToLowerInvariant();
+        
+        Attributes["class"] = Cn(
+            "group/item flex items-center border border-transparent text-sm rounded-md transition-colors [a]:hover:bg-accent/50 [a]:transition-colors duration-100 flex-wrap outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+            GetVariantClasses(),
+            GetSizeClasses(),
+            ClassName
+        );
+        
+        if(Props == null)
+            return;
+
+        foreach (var prop in Props)
+            Attributes[prop.Key] = prop.Value;
+    }
+
+    private string GetVariantClasses()
+    {
+        return Variant switch
+        {
+            ItemVariant.Default => "bg-transparent",
+            ItemVariant.Outline => "border-border",
+            ItemVariant.Muted => "bg-muted/50",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+
+    private string GetSizeClasses()
+    {
+        return Size switch
+        {
+            ItemSize.Default => "p-4 gap-4",
+            ItemSize.Sm => "py-3 px-4 gap-2.5",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+}

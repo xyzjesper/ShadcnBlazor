@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNetCore.Components.Sections
+@inject IJSRuntime JsRuntime
+
+@if (Dropdown.IsOpen)
+{
+    <div class="fixed inset-0 z-50" @onclick="OnClickedOutside">
+    
+    </div>
+}
+
+@if (MenuOpen)
+{
+    <div @ref="Reference" class="min-w-max z-50 hidden">
+        <div data-side="top" data-align="start" role="menu" aria-orientation="vertical"
+             data-state="@(Dropdown.IsOpen ? "open" : "closed")"
+             data-radix-menu-content="" dir="ltr"
+             data-slot="dropdown-menu-content"
+             class="bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border p-1 shadow-md w-56"
+             tabindex="-1" data-orientation="vertical">
+            @ChildContent
+        </div>
+    </div>
+    
+    <SectionOutlet SectionName="@Dropdown.SubmenuOutletId" />
+}
+
+@code
+{
+    [CascadingParameter] public Dropdown Dropdown { get; set; }
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private ElementReference Reference;
+    private bool MenuOpen = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (Dropdown.IsOpen && MenuOpen)
+        {
+            await JsRuntime.InvokeVoidAsync("testy.positionDropdown", Reference, Dropdown.ClientX, Dropdown.ClientY);
+        }
+        
+        if (Dropdown.IsOpen && !MenuOpen)
+        {
+            MenuOpen = true;
+            await InvokeAsync(StateHasChanged);
+        }
+
+        if (!Dropdown.IsOpen && MenuOpen)
+        {
+            await Task.Delay(100);
+            
+            MenuOpen = false;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async Task OnClickedOutside()
+    {
+        await Dropdown.CloseAsync();
+    }
+}

@@ -1,0 +1,21 @@
+﻿@using ShadcnBlazor.Separators
+@inherits ShadcnBase
+
+<Separator data-slot="item-separator"
+           Orientation="SeparatorOrientation.Horizontal"
+           ClassName="@Classes"
+           @attributes="Props">
+    @ChildContent
+</Separator>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn("my-0", ClassName);
+    }
+}

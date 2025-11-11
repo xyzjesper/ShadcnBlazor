@@ -1,0 +1,23 @@
+﻿@inherits ShadcnBase
+
+<p data-slot="item-description"
+   class="@Classes"
+   @attributes="Props">
+    @ChildContent
+</p>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "text-muted-foreground line-clamp-2 text-sm leading-normal font-normal text-balance",
+            "[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
+            ClassName
+        );
+    }
+}

@@ -1,0 +1,22 @@
+﻿@inherits ShadcnBase
+
+<div data-slot="item-content"
+     class="@Classes"
+     @attributes="Props">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "flex flex-1 flex-col gap-1 [&+[data-slot=item-content]]:flex-none",
+            ClassName
+        );
+    }
+}

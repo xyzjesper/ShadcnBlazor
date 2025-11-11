@@ -1,0 +1,27 @@
+﻿<CascadingValue IsFixed="true" Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code
+{
+    [CascadingParameter] public Dropdown Dropdown { get; set; }
+    
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool IsOpen { get; set; } = false;
+
+    public ElementReference TriggerReference { get; private set; }
+
+    public async Task OpenAsync(ElementReference reference)
+    {
+        TriggerReference = reference;
+        
+        IsOpen = true;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public async Task CloseAsync()
+    {
+        IsOpen = false;
+        await InvokeAsync(StateHasChanged);
+    }
+}

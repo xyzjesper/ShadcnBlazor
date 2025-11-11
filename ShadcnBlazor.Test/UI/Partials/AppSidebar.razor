@@ -1,0 +1,141 @@
+﻿@using ShadcnBlazor.Sidebars
+
+@inject NavigationManager Navigation
+
+@implements IDisposable
+
+@{
+    var url = new Uri(Navigation.Uri);
+}
+
+<Sidebar Variant="SidebarVariant.Inset" Collapsible="SidebarCollapsible.OffCanvas">
+    <SidebarHeader>
+        <SidebarMenu>
+            <SidebarMenuItem>
+                <SidebarMenuButton
+                    ClassName="data-[slot=sidebar-menu-button]:!p-1.5">
+                    <a href="#" class="flex flex-row items-center">
+                        <i class="icon-blocks text-xl"></i>
+                        <span class="ms-1 text-base font-semibold">ShadCnBlazor</span>
+                    </a>
+                </SidebarMenuButton>
+            </SidebarMenuItem>
+        </SidebarMenu>
+    </SidebarHeader>
+        
+    <SidebarContent>
+        <SidebarGroup>
+            <SidebarGroupLabel>Application</SidebarGroupLabel>
+            <SidebarGroupContent>
+                <SidebarMenu>
+                    @foreach (var item in Items)
+                    {
+                        var isActive = item.Path.Equals(url.LocalPath, StringComparison.OrdinalIgnoreCase);
+                            
+                        <SidebarMenuItem @key="item">
+                            <SidebarMenuButton IsActive="@isActive">
+                                <Slot>
+                                    <a href="@item.Path" @attributes="context">
+                                        <i class="@item.Icon"></i>
+                                        <span>@item.Name</span>
+                                    </a>
+                                </Slot>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    }
+                </SidebarMenu>
+            </SidebarGroupContent>
+        </SidebarGroup>
+    </SidebarContent>
+</Sidebar>
+
+@code
+{
+    private readonly List<SidebarItem> Items = new();
+
+    protected override void OnInitialized()
+    {
+        Items.AddRange([
+            new()
+            {
+                Name = "Buttons",
+                Icon = "icon-square-power",
+                Path = "/"
+            },
+            new()
+            {
+                Name = "Empty State",
+                Icon = "icon-box",
+                Path = "/empty"
+            },
+            new()
+            {
+                Name = "Input",
+                Icon = "icon-clipboard-type",
+                Path = "/input"
+            },
+            new()
+            {
+                Name = "Alert",
+                Icon = "icon-triangle-alert",
+                Path = "/alert"
+            },
+            new()
+            {
+                Name = "Badge",
+                Icon = "icon-badge",
+                Path = "/badge"
+            },
+            new()
+            {
+                Name = "Dialog",
+                Icon = "icon-message-square-text",
+                Path = "/dialog"
+            },
+            new()
+            {
+                Name = "Kbd",
+                Icon = "icon-keyboard",
+                Path = "/kbd"
+            },
+            new()
+            {
+                Name = "Tabs",
+                Icon = "icon-square-stack",
+                Path = "/tabs"
+            },
+            new()
+            {
+                Name = "Items",
+                Icon = "icon-box",
+                Path = "/items"
+            }
+        ]);
+        
+        Navigation.LocationChanged += OnLocationChanged;
+    }
+
+    private async void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        try
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception)
+        {
+            // Ignored
+        }
+    }
+
+    private record SidebarItem
+    {
+        public string Name { get; set; }
+        public string Icon { get; set; }
+        public string Path { get; set; }
+    }
+
+    public void Dispose()
+    {
+        Navigation.LocationChanged -= OnLocationChanged;
+    }
+}

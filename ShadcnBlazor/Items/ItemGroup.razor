@@ -1,0 +1,23 @@
+﻿@inherits ShadcnBase
+
+<div role="list"
+     data-slot="item-group"
+     class="@ClassName"
+     @attributes="Props">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "group/item-group flex flex-col",
+            ClassName
+        );
+    }
+}

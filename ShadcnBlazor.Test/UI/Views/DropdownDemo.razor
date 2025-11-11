@@ -1,0 +1,107 @@
+﻿@page "/dropdown"
+
+@inject IJSRuntime JsRuntime
+
+<button class="btn btn-primary" @onclick="Callback">
+    AAAAAA
+</button>
+
+<div @ref="Reference" class="min-w-max z-50 hidden">
+    <div data-side="top" data-align="start" role="menu" aria-orientation="vertical" data-state="open"
+         data-radix-menu-content="" dir="ltr" id="radix-_r_55_" aria-labelledby="radix-_r_54_"
+         data-slot="dropdown-menu-content"
+         class="bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border p-1 shadow-md w-56"
+         tabindex="-1" data-orientation="vertical"
+         style="outline: none; --radix-dropdown-menu-content-transform-origin: var(--radix-popper-transform-origin); --radix-dropdown-menu-content-available-width: var(--radix-popper-available-width); --radix-dropdown-menu-content-available-height: var(--radix-popper-available-height); --radix-dropdown-menu-trigger-width: var(--radix-popper-anchor-width); --radix-dropdown-menu-trigger-height: var(--radix-popper-anchor-height); pointer-events: auto;">
+        <div data-slot="dropdown-menu-label" class="px-2 py-1.5 text-sm font-medium data-[inset]:pl-8">My Account</div>
+        <div role="group" data-slot="dropdown-menu-group">
+            @for (var i = 0; i < 10; i++)
+            {
+                if (i == 3)
+                {
+                    <div role="menuitem" data-slot="dropdown-menu-item" data-variant="default"
+                         class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive [&amp;_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4"
+                         tabindex="-1" data-orientation="vertical" data-radix-collection-item=""
+                         onmouseover="this.focus()"
+                         @onfocusin="OnFocusSubmenuIn"
+                         @onfocusout="OnFocusSubmenuOut"
+                         @ref="SubMenuTrigger">
+                        Profile
+                        <span
+                            data-slot="dropdown-menu-shortcut"
+                            class="text-muted-foreground ml-auto text-xs tracking-widest">
+                            ⇧⌘P
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <div role="menuitem" data-slot="dropdown-menu-item" data-variant="default"
+                         class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive [&amp;_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4"
+                         tabindex="-1" data-orientation="vertical" data-radix-collection-item=""
+                         onmouseover="this.focus()">
+                        Profile
+                        <span
+                            data-slot="dropdown-menu-shortcut"
+                            class="text-muted-foreground ml-auto text-xs tracking-widest">
+                            ⇧⌘P
+                        </span>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<div data-radix-popper-content-wrapper=""
+     dir="ltr" class="min-w-max z-50 hidden"
+     @ref="SubMenu">
+    <div data-side="right" data-align="start" role="menu" aria-orientation="vertical" data-state="@(SubmenuOpen ? "open" : "closed")"
+         data-radix-menu-content="" dir="ltr" id="radix-_r_4i_" aria-labelledby="radix-_r_4j_"
+         data-slot="dropdown-menu-sub-content"
+         class="bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden rounded-md border p-1 shadow-lg"
+         tabindex="-1" data-orientation="vertical"
+         style="outline: none; pointer-events: auto; --radix-dropdown-menu-content-transform-origin: var(--radix-popper-transform-origin); --radix-dropdown-menu-content-available-width: var(--radix-popper-available-width); --radix-dropdown-menu-content-available-height: var(--radix-popper-available-height); --radix-dropdown-menu-trigger-width: var(--radix-popper-anchor-width); --radix-dropdown-menu-trigger-height: var(--radix-popper-anchor-height);">
+        <div role="menuitem" data-slot="dropdown-menu-item" data-variant="default"
+             class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive [&amp;_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4"
+             tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Email
+        </div>
+        <div role="menuitem" data-slot="dropdown-menu-item" data-variant="default"
+             class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive [&amp;_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4"
+             tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Message
+        </div>
+        <div role="separator" aria-orientation="horizontal" data-slot="dropdown-menu-separator"
+             class="bg-border -mx-1 my-1 h-px"></div>
+        <div role="menuitem" data-slot="dropdown-menu-item" data-variant="default"
+             class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive [&amp;_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4"
+             tabindex="-1" data-orientation="vertical" data-radix-collection-item="">More...
+        </div>
+    </div>
+</div>
+
+@code {
+    private ElementReference Reference;
+
+    private ElementReference SubMenu;
+    private ElementReference SubMenuTrigger;
+    private bool SubmenuOpen = false;
+
+    private async Task Callback(MouseEventArgs eventArgs)
+    {
+        await JsRuntime.InvokeVoidAsync("testy.positionDropdown", Reference, eventArgs.ClientX, eventArgs.ClientY);
+    }
+
+    private async Task OnFocusSubmenuIn()
+    {
+        SubmenuOpen = true;
+        await InvokeAsync(StateHasChanged);
+        await JsRuntime.InvokeVoidAsync("testy.positionSideElementRelativeToChild", Reference, SubMenuTrigger, SubMenu);
+    }
+    
+    private async Task OnFocusSubmenuOut()
+    {
+        SubmenuOpen = false;
+        await InvokeAsync(StateHasChanged);
+    }
+
+}

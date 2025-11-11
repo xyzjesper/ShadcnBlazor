@@ -1,20 +1,20 @@
 ﻿@inherits ShadcnBase
 
-@if (AsChild)
+@if (Slot != null)
 {
-    @ChildContent.Invoke(Attributes)
+    @Slot.Invoke(Attributes)
 }
 else
 {
     <div @attributes="Attributes">
-        @ChildContent.Invoke(null!)
+        @ChildContent
     </div>
 }
 
 @code
 {
-    [Parameter] public bool AsChild { get; set; }
-    [Parameter] public RenderFragment<Dictionary<string, object?>> ChildContent { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment<Dictionary<string, object?>>? Slot { get; set; }
 
     private Dictionary<string, object?> Attributes;
 
