@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Components.Sections
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Components.Sections
 @using ShadcnBlazor.Interop
 
 @inject PositionService PositionService
@@ -29,7 +30,7 @@
     public async Task OnOpenedAsync(ElementReference trigger)
     {
         var position = await PositionService.PositionAroundAsync(trigger, PositionElement, PositionPreference.Right);
-        PositionStyle = $"transform: translate({position.X}px, {position.Y}px)";
+        PositionStyle = $"transform: translate({position.X.ToString(CultureInfo.InvariantCulture)}px, {position.Y.ToString(CultureInfo.InvariantCulture)}px)";
 
         await InvokeAsync(StateHasChanged);
     }
