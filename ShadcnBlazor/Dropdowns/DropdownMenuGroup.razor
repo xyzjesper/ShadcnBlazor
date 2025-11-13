@@ -1,0 +1,10 @@
+﻿@inherits ShadcnBase
+
+<div data-slot="dropdown-menu-group" class="@ClassName">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}

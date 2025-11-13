@@ -1,15 +1,22 @@
 ﻿@using ShadcnBlazor.Buttons
+@using ShadcnBlazor.Menu
 
-<Button @onclick="Callback">
-    Trigger
+<Button>
+    <Slot>
+        <button @ref="Context.TriggerElement" type="button" @attributes="context" @onclick="OpenDropdownAsync">
+            @ChildContent
+        </button>
+    </Slot>
 </Button>
 
 @code
 {
-    [CascadingParameter(Name = "Dropdown")] public DropdownMenu Dropdown { get; set; }
+    [CascadingParameter(Name = "Menu")] public Menu Menu { get; set; }
+    [CascadingParameter(Name = "DropdownMenu")] public DropdownMenu Context { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
 
-    private async Task Callback(MouseEventArgs obj)
+    private async Task OpenDropdownAsync()
     {
-        await Dropdown.OpenAsync(obj.ClientX, obj.ClientY);
+        await Menu.OpenAsync();
     }
 }

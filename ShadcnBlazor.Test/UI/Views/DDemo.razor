@@ -1,100 +1,79 @@
 ﻿@page "/ddemo"
-@using ShadcnBlazor.Buttons
 @using ShadcnBlazor.Dropdowns
-@using ShadcnBlazor.Interop
 
-<DropdownMenu @ref="Dropdown">
-    <DropdownMenuTrigger/>
-    <DropdownMenuContent>
-        <DropdownMenuItem>
-            Open
-            <span
-                data-slot="dropdown-menu-shortcut"
-                class="text-muted-foreground ml-auto text-xs tracking-widest">
-                ⇧⌘O
-            </span>
-        </DropdownMenuItem>
-        <Sub>
-            <SubTrigger>
-                Archiving
-                
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right ml-auto size-4"><path d="m9 18 6-6-6-6"/></svg>
-            </SubTrigger>
-            <SubContent>
-                <DropdownMenuItem>
-                    Create archive
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    Extract here
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    Extract to archive-1741179931
-                </DropdownMenuItem>
-            </SubContent>
-        </Sub>
-        <DropdownMenuItem>
-            Cut
-            <span
-                data-slot="dropdown-menu-shortcut"
-                class="text-muted-foreground ml-auto text-xs tracking-widest">
-                ⇧⌘X
-            </span>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-            Copy
-            <span
-                data-slot="dropdown-menu-shortcut"
-                class="text-muted-foreground ml-auto text-xs tracking-widest">
-                ⇧⌘C
-            </span>
-        </DropdownMenuItem>
-        <Sub>
-            <SubTrigger>
-                Send to
-                
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right ml-auto size-4"><path d="m9 18 6-6-6-6"/></svg>
-            </SubTrigger>
-            <SubContent>
-                <DropdownMenuItem>
-                    Email
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    File Exchange
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    Virus Scan
-                </DropdownMenuItem>
-            </SubContent>
-        </Sub>
-    </DropdownMenuContent>
-</DropdownMenu>
-
-<Button>
-    <Slot>
-        <button @ref="Trigger" type="button" @attributes="context" @onclick="TriggerAsync">
-            I am a dropdown
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-    </Slot>
-</Button>
-
-<div class="h-64 flex items-center justify-center bg-card/60" @oncontextmenu="OnContextMenu" @oncontextmenu:preventDefault>
-    Right click me
+<div class="mx-8 mt-8">
+    <DropdownMenu>
+        <DropdownMenuTrigger>
+            Test
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+            <DropdownMenuItem>
+                Open
+                <DropdownMenuShortcut>
+                    Enter
+                </DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                    Archiving
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                    <DropdownMenuItem>
+                        Create archive
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        Extract here
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        Extract to archive-1741179931
+                    </DropdownMenuItem>
+                </DropdownMenuSubContent>
+            </DropdownMenuSub>
+            <DropdownMenuItem>
+                Cut
+                <DropdownMenuShortcut>
+                    Ctrl+X
+                </DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy-icon lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                Copy
+                <DropdownMenuShortcut>
+                    Ctrl+C
+                </DropdownMenuShortcut>
+            </DropdownMenuItem>
+            
+            <DropdownMenuItem Variant="DropdownMenuItemVariant.Destructive">
+                Delete
+                <DropdownMenuShortcut>
+                    Del
+                </DropdownMenuShortcut>
+            </DropdownMenuItem>
+            
+            <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                    Send to
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                    <DropdownMenuItem>
+                        Email
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        File Exchange
+                    </DropdownMenuItem>
+                    <DropdownMenuItem Variant="DropdownMenuItemVariant.Destructive">
+                        Virus Scan
+                    </DropdownMenuItem>
+                </DropdownMenuSubContent>
+            </DropdownMenuSub>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+                <DropdownMenuItem>GitHub</DropdownMenuItem>
+                <DropdownMenuItem>Support</DropdownMenuItem>
+                <DropdownMenuItem Disabled="true">API</DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Looooooooooooooooooong</DropdownMenuItem>
+        </DropdownMenuContent>
+    </DropdownMenu>
 </div>
-
-@code
-{
-    private DropdownMenu Dropdown;
-
-    private ElementReference Trigger;
-    
-    private async Task OnContextMenu(MouseEventArgs eventArgs)
-    {
-        await Dropdown.OpenAsync(eventArgs.ClientX, eventArgs.ClientY);
-    }
-
-    private async Task TriggerAsync()
-    {
-        await Dropdown.OpenAsync(Trigger, PositionPreference.Bottom);
-    }
-}

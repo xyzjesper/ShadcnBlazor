@@ -54,55 +54,14 @@ public class PositionService
         };
     }
 
-    public async Task<Position> PositionNextToAsync(
-        ElementReference child,
-        ElementReference target
-    )
-    {
-        var triggerRect = await GetBoundingBoxAsync(child);
-        var submenuRect = await GetBoundingBoxAsync(target);
-
-        const double margin = 8; // distance from viewport edges
-        const double offsetX = 4; // small gap between parent and submenu
-        const double tolerance = 2;
-
-        var viewportSize = await GetViewportSizeAsync();
-
-        // Default: submenu opens to the right of the trigger
-        var x = triggerRect.Right + offsetX;
-        var y = triggerRect.Top;
-
-        // Adjust if submenu overflows to the right — open to the left instead
-        if (x + submenuRect.Width + margin > viewportSize.Width - tolerance)
-        {
-            x = triggerRect.Left - submenuRect.Width - offsetX;
-        }
-
-        // Adjust if submenu overflows to the bottom
-        if (y + submenuRect.Height + margin > viewportSize.Height - tolerance)
-        {
-            y = Math.Max(margin, viewportSize.Height - submenuRect.Height - margin);
-        }
-
-        // Clamp within viewport
-        x = Math.Min(Math.Max(x, margin), viewportSize.Width - submenuRect.Width - margin);
-        y = Math.Min(Math.Max(y, margin), viewportSize.Height - submenuRect.Height - margin);
-
-        return new Position()
-        {
-            X = x,
-            Y = y
-        };
-    }
-
     public async Task<Position> PositionAroundAsync(
-        ElementReference child,
-        ElementReference target,
+        ElementReference aroundElement,
+        ElementReference elementToPosition,
         PositionPreference preference
     )
     {
-        var triggerRect = await GetBoundingBoxAsync(child);
-        var submenuRect = await GetBoundingBoxAsync(target);
+        var triggerRect = await GetBoundingBoxAsync(aroundElement);
+        var submenuRect = await GetBoundingBoxAsync(elementToPosition);
 
         const double margin = 8; // distance from viewport edges
         const double offset = 4; // small gap between parent and submenu
