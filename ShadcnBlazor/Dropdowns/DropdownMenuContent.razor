@@ -22,6 +22,7 @@
     [CascadingParameter(Name = "Menu")] public Menu Menu { get; set; }
 
     [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public PositionPreference Align { get; set; } = PositionPreference.Bottom;
 
     private string? Classes;
 
@@ -38,7 +39,7 @@
         return await PositionService.PositionAroundAsync(
             Context.TriggerElement,
             dropdownElement,
-            PositionPreference.Bottom
+            Align
         );
     }
 }
