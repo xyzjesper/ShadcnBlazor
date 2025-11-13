@@ -2,35 +2,40 @@
 @using ShadcnBlazor.Buttons
 @using ShadcnBlazor.Inputs
 @using ShadcnBlazor.Separators
+@using ShadcnBlazor.Labels
 
 <div class="mt-8 mx-8">
-    <input class="input" type="email" placeholder="Email"/>
+    <InputField Type="email" placeholder="Email"/>
 </div>
 
 <div class="mt-8 mx-8">
-    <input class="input" type="email" placeholder="Email" disabled="disabled"/>
+    <InputField Type="email" placeholder="Email" disabled="disabled"/>
 </div>
 
 <div class="mt-8 mx-8">
     <div class="grid w-full max-w-sm items-center gap-3">
         <Label for="email">Email</Label>
-        <input type="email" class="input" id="email" placeholder="Email" />
+        <InputField Type="email" id="email" placeholder="Email" />
     </div>
 </div>
 
 <div class="mt-8 mx-8">
     <div class="flex w-full max-w-sm items-center gap-2">
-        <input class="input" type="email" placeholder="Email" />
-        <button class="btn btn-md btn-outline" type="submit">
+        <InputField Type="email" placeholder="Email" />
+        <Button Variant="ButtonVariant.Outline">
             Subscribe
-        </button>
+        </Button>
     </div>
 </div>
 
 <div class="mt-8 mx-8">
     <div class="grid w-full max-w-sm items-center gap-3">
         <label class="label" for="picture">Picture</label>
-        <input id="picture" type="file" class="input" />
+        <InputField>
+            <Slot>
+                <input @attributes="context" id="picture" type="file" />
+            </Slot>
+        </InputField>
     </div>
 </div>
 
