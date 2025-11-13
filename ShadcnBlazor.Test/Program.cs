@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using ShadcnBlazor.Interop;
 using ShadcnBlazor.Test.UI;
 using ShadcnBlazor.Test.UI.Components;
 using TailwindMerge.Extensions;

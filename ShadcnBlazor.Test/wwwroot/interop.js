@@ -1,7 +1,6 @@
 ﻿window.testy = {
 
     getBoundingBox: function (element) {
-        console.log(element);
         return element.getBoundingClientRect();
     },
 

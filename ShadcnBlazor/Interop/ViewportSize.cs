@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace ShadcnBlazor.Test.UI.Components;
+namespace ShadcnBlazor.Interop;
 
 public class ViewportSize
 {

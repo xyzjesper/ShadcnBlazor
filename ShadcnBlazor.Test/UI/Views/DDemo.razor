@@ -1,66 +1,100 @@
 ﻿@page "/ddemo"
-@using ShadcnBlazor.Test.UI.Components
+@using ShadcnBlazor.Buttons
+@using ShadcnBlazor.Dropdowns
+@using ShadcnBlazor.Interop
 
-<Dropdown>
-    <DropdownTrigger/>
-    <DropdownContent>
-        <DropdownItem>
-            Profile
+<DropdownMenu @ref="Dropdown">
+    <DropdownMenuTrigger/>
+    <DropdownMenuContent>
+        <DropdownMenuItem>
+            Open
             <span
                 data-slot="dropdown-menu-shortcut"
                 class="text-muted-foreground ml-auto text-xs tracking-widest">
-                ⇧⌘P
+                ⇧⌘O
             </span>
-        </DropdownItem>
-        <DropdownItem>
-            Profile
-            <span
-                data-slot="dropdown-menu-shortcut"
-                class="text-muted-foreground ml-auto text-xs tracking-widest">
-                ⇧⌘P
-            </span>
-        </DropdownItem>
-        <DropdownItem>
-            Profile
-            <span
-                data-slot="dropdown-menu-shortcut"
-                class="text-muted-foreground ml-auto text-xs tracking-widest">
-                ⇧⌘P
-            </span>
-        </DropdownItem>
+        </DropdownMenuItem>
         <Sub>
             <SubTrigger>
-                Sub
-                <span
-                    data-slot="dropdown-menu-shortcut"
-                    class="text-muted-foreground ml-auto text-xs tracking-widest">
-                    ⇧⌘P
-                </span>
+                Archiving
+                
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right ml-auto size-4"><path d="m9 18 6-6-6-6"/></svg>
             </SubTrigger>
             <SubContent>
-                <div role="menuitem" data-slot="dropdown-menu-item" data-variant="default"
-                     class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive [&amp;_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4"
-                     tabindex="-1" data-orientation="vertical" data-radix-collection-item=""
-                     onmouseover="this.focus()">
-                    Profile
-                    <span
-                        data-slot="dropdown-menu-shortcut"
-                        class="text-muted-foreground ml-auto text-xs tracking-widest">
-                ⇧⌘P
-            </span>
-                </div>
-                <div role="menuitem" data-slot="dropdown-menu-item" data-variant="default"
-                     class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive [&amp;_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4"
-                     tabindex="-1" data-orientation="vertical" data-radix-collection-item=""
-                     onmouseover="this.focus()">
-                    Profile
-                    <span
-                        data-slot="dropdown-menu-shortcut"
-                        class="text-muted-foreground ml-auto text-xs tracking-widest">
-                ⇧⌘P
-            </span>
-                </div>
+                <DropdownMenuItem>
+                    Create archive
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    Extract here
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    Extract to archive-1741179931
+                </DropdownMenuItem>
             </SubContent>
         </Sub>
-    </DropdownContent>
-</Dropdown>
+        <DropdownMenuItem>
+            Cut
+            <span
+                data-slot="dropdown-menu-shortcut"
+                class="text-muted-foreground ml-auto text-xs tracking-widest">
+                ⇧⌘X
+            </span>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+            Copy
+            <span
+                data-slot="dropdown-menu-shortcut"
+                class="text-muted-foreground ml-auto text-xs tracking-widest">
+                ⇧⌘C
+            </span>
+        </DropdownMenuItem>
+        <Sub>
+            <SubTrigger>
+                Send to
+                
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right ml-auto size-4"><path d="m9 18 6-6-6-6"/></svg>
+            </SubTrigger>
+            <SubContent>
+                <DropdownMenuItem>
+                    Email
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    File Exchange
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    Virus Scan
+                </DropdownMenuItem>
+            </SubContent>
+        </Sub>
+    </DropdownMenuContent>
+</DropdownMenu>
+
+<Button>
+    <Slot>
+        <button @ref="Trigger" type="button" @attributes="context" @onclick="TriggerAsync">
+            I am a dropdown
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+    </Slot>
+</Button>
+
+<div class="h-64 flex items-center justify-center bg-card/60" @oncontextmenu="OnContextMenu" @oncontextmenu:preventDefault>
+    Right click me
+</div>
+
+@code
+{
+    private DropdownMenu Dropdown;
+
+    private ElementReference Trigger;
+    
+    private async Task OnContextMenu(MouseEventArgs eventArgs)
+    {
+        await Dropdown.OpenAsync(eventArgs.ClientX, eventArgs.ClientY);
+    }
+
+    private async Task TriggerAsync()
+    {
+        await Dropdown.OpenAsync(Trigger, PositionPreference.Bottom);
+    }
+}

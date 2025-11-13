@@ -1,0 +1,82 @@
+﻿@using Microsoft.AspNetCore.Components.Sections
+@using ShadcnBlazor.Interop
+
+@implements IDropdownNode
+
+@inject PositionService PositionService
+
+<CascadingValue TValue="Sub" IsFixed="true" Value="this" Name="Sub">
+    @ChildContent
+</CascadingValue>
+
+@if (ShouldRenderContent)
+{
+    <SectionContent SectionName="@Dropdown.SubMenuSectionId">
+        <div @ref="PositionElement" dir="ltr" class="min-w-max z-50 fixed top-0 left-0" style="@PositionElementStyle">
+            <SectionOutlet SectionName="@SubMenuContentSectionId" />
+        </div>
+    </SectionContent>
+}
+
+@code
+{
+    [CascadingParameter(Name = "Dropdown")] public DropdownMenu Dropdown { get; set; }
+    
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool IsOpen { get; set; }
+    
+    public IDropdownItem? FocusedItem { get; private set; }
+    public string SubMenuContentSectionId => $"dropdown-sub-content-{GetHashCode()}";
+
+    private bool ShouldRenderContent = false;
+    private ElementReference PositionElement;
+    private string PositionElementStyle = "";
+
+    public async Task OpenAsync(ElementReference triggerElement)
+    {
+        ShouldRenderContent = true;
+        IsOpen = true;
+        
+        // First rerender to ensure the PositionElement exists in the dom so
+        // our JavaScript positioning service can interact with it
+        await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
+        {
+            // Calculate ideal position...
+            var position = await PositionService.PositionAroundAsync(
+                triggerElement,
+                PositionElement,
+                PositionPreference.Right
+            );
+            
+            PositionElementStyle = $"transform: translate({position.X}px, {position.Y}px)";
+            
+            // And update the position element with our new style
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+
+    public async Task CloseAsync()
+    {
+        IsOpen = false;
+
+        await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
+        {
+            // Time for the close animation to play
+            await Task.Delay(100);
+
+            // After the animation we remove the element from the dom
+            ShouldRenderContent = false;
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+    
+    public async Task SetFocusAsync(IDropdownItem item)
+    {
+        FocusedItem = item;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    // Forward selection handling to main dropdown handler
+    public async Task HandleSelectionAsync()
+        => await Dropdown.HandleSelectionAsync();
+}
