@@ -197,7 +197,7 @@ public class PositionService
         return new Position(x, y);
     }
 
-    private async Task<DomRect> GetBoundingBoxAsync(ElementReference element)
+    public async Task<DomRect> GetBoundingBoxAsync(ElementReference element)
     {
         return await JsRuntime.InvokeAsync<DomRect>("testy.getBoundingBox", element);
     }

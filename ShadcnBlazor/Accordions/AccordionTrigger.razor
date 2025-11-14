@@ -1,0 +1,21 @@
+<h3 data-orientation="vertical" data-state="@(Item.IsOpen ? "open" : "closed")" class="flex">
+    <button @onclick="TriggerAsync" type="button" aria-expanded="false" data-state="@(Item.IsOpen ? "open" : "closed")"
+            data-orientation="vertical" data-slot="accordion-trigger"
+            class="focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&amp;[data-state=open]&gt;svg]:rotate-180">
+        @ChildContent
+    </button>
+</h3>
+
+@code
+{
+    [CascadingParameter(Name = "AccordionItem")] public AccordionItem Item { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private async Task TriggerAsync()
+    {
+        if (Item.IsOpen)
+            await Item.CloseAsync();
+        else
+            await Item.OpenAsync();
+    }
+}

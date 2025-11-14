@@ -1,0 +1,42 @@
+<div data-state="@(IsOpen ? "open" : "closed")" data-orientation="vertical" data-slot="accordion-item" class="border-b last:border-b-0">
+    <CascadingValue TValue="AccordionItem" IsFixed="true" Name="AccordionItem" Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    public bool IsOpen { get; private set; }
+    public bool ShouldRenderContent { get; private set; }
+
+    private AccordionContent ContentRef;
+    
+    public async Task OpenAsync()
+    {
+        IsOpen = true;
+        ShouldRenderContent = true;
+        
+        await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
+        {
+            await ContentRef.OnOpened();
+        });
+    }
+
+    public async Task CloseAsync()
+    {
+        IsOpen = false;
+        
+        await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
+        {
+            await Task.Delay(100);
+            
+            ShouldRenderContent = false;
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+
+    internal void SetContentRef(AccordionContent content)
+        => ContentRef = content;
+}
