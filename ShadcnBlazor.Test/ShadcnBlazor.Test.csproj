@@ -16,6 +16,7 @@
       <_ContentIncludedByDefault Remove="wwwroot\css\app.css" />
       <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
       <_ContentIncludedByDefault Remove="UI\Abc\Comp1.razor" />
+      <_ContentIncludedByDefault Remove="UI\Components\Checkbox.razor" />
     </ItemGroup>
 
     <ItemGroup>
