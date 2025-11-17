@@ -1,6 +1,6 @@
 ﻿namespace ShadcnBlazor.Interop;
 
-public enum PositionPreference
+public enum PositionSide
 {
     Right,
     Left,

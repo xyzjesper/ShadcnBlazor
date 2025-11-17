@@ -8,6 +8,8 @@
 <MenuContent PositionCallback="OnPositionAsync">
     <div data-slot="dropdown-menu-content"
          data-state="@(Menu.IsOpen ? "open" : "closed")"
+         data-side="@(Side.ToString().ToLowerInvariant())"
+         data-align="@(Align.ToString().ToLowerInvariant())"
          class="@Classes"
          @attributes="Props">
         @ChildContent
@@ -22,7 +24,8 @@
     [CascadingParameter(Name = "Menu")] public Menu Menu { get; set; }
 
     [Parameter] public RenderFragment ChildContent { get; set; }
-    [Parameter] public PositionPreference Align { get; set; } = PositionPreference.Bottom;
+    [Parameter] public PositionSide Side { get; set; } = PositionSide.Bottom;
+    [Parameter] public PositionAlignment Align { get; set; } = PositionAlignment.Start;
 
     private string? Classes;
 
@@ -39,7 +42,7 @@
         return await PositionService.PositionAroundAsync(
             Context.TriggerElement,
             dropdownElement,
-            Align
+            Side
         );
     }
 }

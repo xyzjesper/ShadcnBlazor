@@ -1,0 +1,41 @@
+﻿<CascadingValue TValue="Popover" IsFixed="true" Name="Popover" Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code
+{
+    [Parameter] public bool DefaultOpen { get; set; }
+    [Parameter] public EventCallback<bool> OnOpenChange { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    public bool IsOpen { get; private set; }
+    public bool ShouldRenderContent { get; private set; }
+
+    internal PopoverTrigger Trigger { set; get; }
+    internal PopoverContent Content { set; get; }
+    internal PopoverAnchor? Anchor { set; get; }
+    
+    public async Task OpenAsync()
+    {
+        IsOpen = true;
+        ShouldRenderContent = true;
+        
+        await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
+        {
+            await Content.OnOpenedAsync();
+        });
+    }
+
+    public async Task CloseAsync()
+    {
+        IsOpen = false;
+
+        await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
+        {
+            await Task.Delay(100);
+
+            ShouldRenderContent = false;
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+}

@@ -1,0 +1,54 @@
+﻿@using ShadcnBlazor.Buttons
+
+@inherits ShadcnBase
+
+@if (Slot != null)
+{
+    <span @ref="TriggerElement">
+        @Slot.Invoke(Attributes)
+    </span>
+}
+else
+{
+    <Button>
+        <Slot>
+            <button @ref="TriggerElement" @attributes="context.Concat(Attributes)">
+                @ChildContent
+            </button>
+        </Slot>
+    </Button>
+}
+
+@code
+{
+    [CascadingParameter(Name = "Popover")]
+    public Popover Popover { get; set; }
+    
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment<Dictionary<string, object?>>? Slot { get; set; }
+    
+    internal ElementReference TriggerElement { get; private set; }
+    
+    private Dictionary<string, object?> Attributes;
+
+    protected override void OnParametersSet()
+    {
+        Popover.Trigger = this;
+        
+        Attributes = new();
+
+        Attributes["data-slot"] = "popover-trigger";
+        Attributes["onclick"] = EventCallback.Factory.Create(this, HandleClickAsync);
+        
+        if(Props == null)
+            return;
+
+        foreach (var prop in Props)
+            Attributes[prop.Key] = prop.Value;
+    }
+
+    private async Task HandleClickAsync()
+    {
+        await Popover.OpenAsync();
+    }
+}

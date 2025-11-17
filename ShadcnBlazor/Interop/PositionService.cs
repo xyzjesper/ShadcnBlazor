@@ -57,60 +57,53 @@ public class PositionService
     public async Task<Position> PositionAroundAsync(
         ElementReference aroundElement,
         ElementReference elementToPosition,
-        PositionPreference preference
+        PositionSide side,
+        PositionAlignment alignment = PositionAlignment.Start,
+        double offset = 4
     )
     {
         var triggerRect = await GetBoundingBoxAsync(aroundElement);
         var submenuRect = await GetBoundingBoxAsync(elementToPosition);
 
         const double margin = 8; // distance from viewport edges
-        const double offset = 4; // small gap between parent and submenu
         const double tolerance = 2;
 
         var viewportSize = await GetViewportSizeAsync();
 
         Position position;
 
-        switch (preference)
+        switch (side)
         {
-            case PositionPreference.Right:
-                position = PositionRight(triggerRect, submenuRect, viewportSize, offset, margin, tolerance);
-                
-                // Fallback to left if clipping
+            case PositionSide.Right:
+                position = PositionRight(triggerRect, submenuRect, viewportSize, offset, margin, tolerance, alignment);
                 if (position.X + submenuRect.Width + margin > viewportSize.Width - tolerance)
-                    position = PositionLeft(triggerRect, submenuRect, viewportSize, offset, margin, tolerance);
-
+                    position = PositionLeft(triggerRect, submenuRect, viewportSize, offset, margin, tolerance,
+                        alignment);
                 break;
 
-            case PositionPreference.Left:
-                position = PositionLeft(triggerRect, submenuRect, viewportSize, offset, margin, tolerance);
-                
-                // Fallback to right if clipping
+            case PositionSide.Left:
+                position = PositionLeft(triggerRect, submenuRect, viewportSize, offset, margin, tolerance, alignment);
                 if (position.X < margin)
-                    position = PositionRight(triggerRect, submenuRect, viewportSize, offset, margin, tolerance);
-
+                    position = PositionRight(triggerRect, submenuRect, viewportSize, offset, margin, tolerance,
+                        alignment);
                 break;
 
-            case PositionPreference.Bottom:
-                position = PositionBottom(triggerRect, submenuRect, viewportSize, offset, margin, tolerance);
-                
-                // Fallback to top if clipping
+            case PositionSide.Bottom:
+                position = PositionBottom(triggerRect, submenuRect, viewportSize, offset, margin, tolerance, alignment);
                 if (position.Y + submenuRect.Height + margin > viewportSize.Height - tolerance)
-                    position = PositionTop(triggerRect, submenuRect, viewportSize, offset, margin, tolerance);
-
+                    position = PositionTop(triggerRect, submenuRect, viewportSize, offset, margin, tolerance,
+                        alignment);
                 break;
 
-            case PositionPreference.Top:
-                position = PositionTop(triggerRect, submenuRect, viewportSize, offset, margin, tolerance);
-                
-                // Fallback to bottom if clipping
+            case PositionSide.Top:
+                position = PositionTop(triggerRect, submenuRect, viewportSize, offset, margin, tolerance, alignment);
                 if (position.Y < margin)
-                    position = PositionBottom(triggerRect, submenuRect, viewportSize, offset, margin, tolerance);
-
+                    position = PositionBottom(triggerRect, submenuRect, viewportSize, offset, margin, tolerance,
+                        alignment);
                 break;
 
             default:
-                position = PositionRight(triggerRect, submenuRect, viewportSize, offset, margin, tolerance);
+                position = PositionRight(triggerRect, submenuRect, viewportSize, offset, margin, tolerance, alignment);
                 break;
         }
 
@@ -121,24 +114,49 @@ public class PositionService
         return position;
     }
 
+    private static double AlignVertical(DomRect trigger, DomRect submenu, PositionAlignment alignment)
+    {
+        return alignment switch
+        {
+            PositionAlignment.Start => trigger.Top,
+            PositionAlignment.Center => trigger.Top + (trigger.Height / 2) - (submenu.Height / 2),
+            PositionAlignment.End => trigger.Bottom - submenu.Height,
+            _ => trigger.Top
+        };
+    }
+
+    private static double AlignHorizontal(DomRect trigger, DomRect submenu, PositionAlignment alignment)
+    {
+        return alignment switch
+        {
+            PositionAlignment.Start => trigger.Left,
+            PositionAlignment.Center => trigger.Left + (trigger.Width / 2) - (submenu.Width / 2),
+            PositionAlignment.End => trigger.Right - submenu.Width,
+            _ => trigger.Left
+        };
+    }
+
+
     private static Position PositionRight(
         DomRect trigger,
         DomRect submenu,
         ViewportSize viewport,
         double offset,
         double margin,
-        double tolerance
+        double tolerance,
+        PositionAlignment alignment
     )
     {
         var x = trigger.Right + offset;
-        var y = trigger.Top;
+        var y = AlignVertical(trigger, submenu, alignment);
 
-        // Adjust vertical position if overflow
+        // Clamp vertical overflow
         if (y + submenu.Height + margin > viewport.Height - tolerance)
-            y = Math.Max(margin, viewport.Height - submenu.Height - margin);
+            y = viewport.Height - submenu.Height - margin;
 
         return new Position(x, y);
     }
+
 
     private static Position PositionLeft(
         DomRect trigger,
@@ -146,15 +164,15 @@ public class PositionService
         ViewportSize viewport,
         double offset,
         double margin,
-        double tolerance
+        double tolerance,
+        PositionAlignment alignment
     )
     {
         var x = trigger.Left - submenu.Width - offset;
-        var y = trigger.Top;
+        var y = AlignVertical(trigger, submenu, alignment);
 
-        // Adjust vertical position if overflow
         if (y + submenu.Height + margin > viewport.Height - tolerance)
-            y = Math.Max(margin, viewport.Height - submenu.Height - margin);
+            y = viewport.Height - submenu.Height - margin;
 
         return new Position(x, y);
     }
@@ -165,18 +183,19 @@ public class PositionService
         ViewportSize viewport,
         double offset,
         double margin,
-        double tolerance
+        double tolerance,
+        PositionAlignment alignment
     )
     {
-        var x = trigger.Left;
+        var x = AlignHorizontal(trigger, submenu, alignment);
         var y = trigger.Bottom + offset;
 
-        // Adjust horizontal position if overflow
         if (x + submenu.Width + margin > viewport.Width - tolerance)
-            x = Math.Max(margin, viewport.Width - submenu.Width - margin);
+            x = viewport.Width - submenu.Width - margin;
 
         return new Position(x, y);
     }
+
 
     private static Position PositionTop(
         DomRect trigger,
@@ -184,18 +203,19 @@ public class PositionService
         ViewportSize viewport,
         double offset,
         double margin,
-        double tolerance
+        double tolerance,
+        PositionAlignment alignment
     )
     {
-        var x = trigger.Left;
+        var x = AlignHorizontal(trigger, submenu, alignment);
         var y = trigger.Top - submenu.Height - offset;
 
-        // Adjust horizontal position if overflow
         if (x + submenu.Width + margin > viewport.Width - tolerance)
-            x = Math.Max(margin, viewport.Width - submenu.Width - margin);
+            x = viewport.Width - submenu.Width - margin;
 
         return new Position(x, y);
     }
+
 
     public async Task<DomRect> GetBoundingBoxAsync(ElementReference element)
     {

@@ -33,7 +33,7 @@
     public async Task OnOpenedAsync()
     {
         var position = await PositionCallback.Invoke(PositionElement);
-        PositionStyle = $"transform: translate({position.X.ToString(CultureInfo.InvariantCulture)}px, {position.Y.ToString(CultureInfo.InvariantCulture)}px)";
+        PositionStyle = $"left: {position.X.ToString(CultureInfo.InvariantCulture)}px; top: {position.Y.ToString(CultureInfo.InvariantCulture)}px";
 
         await InvokeAsync(StateHasChanged);
     }

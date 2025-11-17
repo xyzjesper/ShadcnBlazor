@@ -1,0 +1,61 @@
+﻿@using System.Globalization
+@using ShadcnBlazor.Interop
+
+@inherits ShadcnBase
+
+@inject PositionService PositionService
+
+@if (Popover.ShouldRenderContent)
+{
+    <div class="fixed inset-0 z-50" @onclick="OnBackdropClickAsync">
+    </div>
+
+    <div @ref="PositionElement"
+         data-slot="popover-content"
+         data-state="@(Popover.IsOpen ? "open" : "closed")"
+         data-side="@(Side.ToString().ToLowerInvariant())"
+         align="@(Align.ToString().ToLowerInvariant())"
+         role="dialog"
+         class="@Classes"
+         style="@PositionStyle"
+         @attributes="Props">
+        @ChildContent
+    </div>
+}
+
+@code
+{
+    [CascadingParameter(Name = "Popover")] Popover Popover { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public double SideOffset { get; set; } = 10;
+    [Parameter] public PositionAlignment Align { get; set; } = PositionAlignment.Center;
+    [Parameter] public PositionSide Side { get; set; } = PositionSide.Bottom;
+
+    private string? Classes;
+    private ElementReference PositionElement;
+    private string PositionStyle;
+
+    protected override void OnParametersSet()
+    {
+        Popover.Content = this;
+
+        Classes = Cn(
+            "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-72 origin-(--radix-popover-content-transform-origin) rounded-md border p-4 shadow-md outline-hidden",
+            "fixed top-0 left-0 z-50",
+            ClassName
+        );
+    }
+
+    internal async Task OnOpenedAsync()
+    {
+        var aroundElement = Popover.Anchor?.AnchorReference ?? Popover.Trigger.TriggerElement;
+
+        var position = await PositionService.PositionAroundAsync(aroundElement, PositionElement, Side, Align, SideOffset);
+        PositionStyle = $"left: {position.X.ToString(CultureInfo.InvariantCulture)}px; top: {position.Y.ToString(CultureInfo.InvariantCulture)}px";
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task OnBackdropClickAsync()
+        => await Popover.CloseAsync();
+}

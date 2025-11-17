@@ -1,0 +1,16 @@
+﻿<span @ref="AnchorReference">
+    @ChildContent
+</span>
+
+@code
+{
+    [CascadingParameter(Name = "Popover")] public Popover Popover { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    internal ElementReference AnchorReference { get; private set; }
+
+    protected override void OnParametersSet()
+    {
+        Popover.Anchor = this;
+    }
+}

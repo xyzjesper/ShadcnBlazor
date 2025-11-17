@@ -29,8 +29,8 @@
 
     public async Task OnOpenedAsync(ElementReference trigger)
     {
-        var position = await PositionService.PositionAroundAsync(trigger, PositionElement, PositionPreference.Right);
-        PositionStyle = $"transform: translate({position.X.ToString(CultureInfo.InvariantCulture)}px, {position.Y.ToString(CultureInfo.InvariantCulture)}px)";
+        var position = await PositionService.PositionAroundAsync(trigger, PositionElement, PositionSide.Right);
+        PositionStyle = $"left: {position.X.ToString(CultureInfo.InvariantCulture)}px; top: {position.Y.ToString(CultureInfo.InvariantCulture)}px";
 
         await InvokeAsync(StateHasChanged);
     }
