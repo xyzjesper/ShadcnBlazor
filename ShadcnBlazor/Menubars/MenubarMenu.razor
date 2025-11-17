@@ -1,0 +1,10 @@
+﻿@using ShadcnBlazor.Menu
+
+<Menu>
+    @ChildContent
+</Menu>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}
