@@ -1,4 +1,10 @@
-<div data-state="@(IsOpen ? "open" : "closed")" data-orientation="vertical" data-slot="accordion-item" class="border-b last:border-b-0">
+@inherits ShadcnBase
+
+<div data-state="@(IsOpen ? "open" : "closed")"
+     data-orientation="vertical"
+     data-slot="accordion-item"
+     class="@Classes"
+     @attributes="Props">
     <CascadingValue TValue="AccordionItem" IsFixed="true" Name="AccordionItem" Value="this">
         @ChildContent
     </CascadingValue>
@@ -6,7 +12,7 @@
 
 @code
 {
-    [CascadingParameter] public Accordion Accordion { get; set; }
+    [CascadingParameter(Name = "Accordion")] public Accordion Accordion { get; set; }
     
     [Parameter] public RenderFragment ChildContent { get; set; }
     [Parameter] public string Value { get; set; }
@@ -14,6 +20,7 @@
     public bool IsOpen { get; private set; }
     public bool ShouldRenderContent { get; private set; }
 
+    private string? Classes;
     private AccordionContent ContentRef;
 
     protected override void OnInitialized()
@@ -21,7 +28,22 @@
         Accordion.AddItem(this);
     }
 
-    public async Task OpenAsync()
+    protected override void OnParametersSet()
+    {
+        Classes = Cn("border-b last:border-b-0", ClassName);
+    }
+
+    public async Task OnSelectionChangedAsync()
+    {
+        var isActive = Accordion.Values.Contains(Value);
+
+        if (isActive && !IsOpen)
+            await OpenAsync();
+        else if (!isActive && IsOpen)
+            await CloseAsync();
+    }
+
+    private async Task OpenAsync()
     {
         IsOpen = true;
         ShouldRenderContent = true;
@@ -32,7 +54,7 @@
         });
     }
 
-    public async Task CloseAsync()
+    private async Task CloseAsync()
     {
         IsOpen = false;
         

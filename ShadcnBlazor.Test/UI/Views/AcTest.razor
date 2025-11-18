@@ -2,8 +2,8 @@
 @using ShadcnBlazor.Accordions
 
 <div class="mx-8 mt-8">
-    <Accordion>
-        <AccordionItem>
+    <Accordion Type="AccordionType.Multiple" DefaultValue="2">
+        <AccordionItem Value="1">
             <AccordionTrigger>Triggered</AccordionTrigger>
             <AccordionContent>
                 <p>Our flagship product combines cutting-edge technology with sleek design. Built with premium
@@ -12,7 +12,7 @@
                     both beginners and experts.</p>
             </AccordionContent>
         </AccordionItem>
-        <AccordionItem>
+        <AccordionItem Value="2">
             <AccordionTrigger>Triggered</AccordionTrigger>
             <AccordionContent>
                 <p>Hi</p>
@@ -25,7 +25,7 @@
                 <p>Hi</p>
             </AccordionContent>
         </AccordionItem>
-        <AccordionItem>
+        <AccordionItem Value="3">
             <AccordionTrigger>Triggered</AccordionTrigger>
             <AccordionContent>
                 <p>Hi</p>

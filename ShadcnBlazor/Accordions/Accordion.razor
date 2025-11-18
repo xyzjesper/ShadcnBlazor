@@ -1,6 +1,10 @@
-<CascadingValue TValue="Accordion" IsFixed="true" Name="Accordion" Value="this">
-    @ChildContent
-</CascadingValue>
+@inherits ShadcnBase
+
+<div data-slot="accordion" class="@Classes" data-orientation="vertical">
+    <CascadingValue TValue="Accordion" IsFixed="true" Name="Accordion" Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
 
 @code
 {
@@ -12,6 +16,7 @@
     public List<string> Values { get; private set; }
 
     private List<AccordionItem> Items = new();
+    private string? Classes;
 
     protected override void OnInitialized()
     {
@@ -23,17 +28,43 @@
             Values = [];
     }
 
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(ClassName);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+
+        await RefreshSelectionAsync();
+    }
+
     public async Task TriggerAsync(string value)
     {
         if (Type == AccordionType.Single)
         {
-            
+            if (Values.Contains(value))
+                Values = [];
+            else
+                Values = [value];
         }
+        else
+        {
+            if (Values.Contains(value))
+                Values.Remove(value);
+            else
+                Values.Add(value);
+        }
+
+        await RefreshSelectionAsync();
     }
 
-    public async Task CloseAsync()
+    private async Task RefreshSelectionAsync()
     {
-        
+        foreach (var item in Items)
+            await item.OnSelectionChangedAsync();
     }
 
     internal void AddItem(AccordionItem item) => Items.Add(item);
