@@ -9,6 +9,7 @@
 @code
 {
     [CascadingParameter(Name = "AccordionItem")] public AccordionItem Item { get; set; }
+    [CascadingParameter(Name = "Accordion")] public Accordion Accordion { get; set; }
     [Parameter] public RenderFragment ChildContent { get; set; }
 
     private async Task TriggerAsync()

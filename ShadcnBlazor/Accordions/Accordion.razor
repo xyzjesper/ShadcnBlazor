@@ -1,8 +1,40 @@
-<CascadingValue TValue="Accordion" IsFixed="true" Value="this">
+<CascadingValue TValue="Accordion" IsFixed="true" Name="Accordion" Value="this">
     @ChildContent
 </CascadingValue>
 
 @code
 {
     [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public string? DefaultValue { get; set; }
+    [Parameter] public string[]? DefaultValues { get; set; }
+    [Parameter] public AccordionType Type { get; set; } = AccordionType.Single;
+
+    public List<string> Values { get; private set; }
+
+    private List<AccordionItem> Items = new();
+
+    protected override void OnInitialized()
+    {
+        if (DefaultValues != null)
+            Values = DefaultValues.ToList();
+        else if (DefaultValue != null)
+            Values = [DefaultValue];
+        else
+            Values = [];
+    }
+
+    public async Task TriggerAsync(string value)
+    {
+        if (Type == AccordionType.Single)
+        {
+            
+        }
+    }
+
+    public async Task CloseAsync()
+    {
+        
+    }
+
+    internal void AddItem(AccordionItem item) => Items.Add(item);
 }

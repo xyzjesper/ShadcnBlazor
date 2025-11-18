@@ -6,13 +6,21 @@
 
 @code
 {
+    [CascadingParameter] public Accordion Accordion { get; set; }
+    
     [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public string Value { get; set; }
 
     public bool IsOpen { get; private set; }
     public bool ShouldRenderContent { get; private set; }
 
     private AccordionContent ContentRef;
-    
+
+    protected override void OnInitialized()
+    {
+        Accordion.AddItem(this);
+    }
+
     public async Task OpenAsync()
     {
         IsOpen = true;
