@@ -1,0 +1,32 @@
+@inherits ShadcnBase
+
+<div data-slot="progress"
+     data-value="@Value"
+     data-max="@Max"
+     class="@Classes"
+     @attributes="Props">
+    
+    <div data-slot="progress-indicator"
+         class="bg-primary h-full w-full flex-1 transition-all"
+         data-value="@Value"
+         data-max="@Max"
+         style="transform: translateX(-@(100 - Value)%)">
+    </div>
+    
+</div>
+
+@code
+{
+    [Parameter] public int Value { get; set; }
+    [Parameter] public int Max { get; set; }
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "bg-primary/20 relative h-2 w-full overflow-hidden rounded-full",
+            ClassName
+        );
+    }
+}
