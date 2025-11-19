@@ -9,7 +9,7 @@
 }
 else
 {
-    <Button>
+    <Button ClassName="@ClassName">
         <Slot>
             <button @ref="Context.TriggerElement" type="button" @attributes="context.Concat(Attributes)">
                 @ChildContent
@@ -24,6 +24,7 @@ else
     [CascadingParameter(Name = "DropdownMenu")] public DropdownMenu Context { get; set; }
     [Parameter] public RenderFragment ChildContent { get; set; }
     [Parameter] public RenderFragment<Dictionary<string, object?>>? Slot { get; set; }
+    [Parameter] public string? ClassName { get; set; }
 
     private Dictionary<string, object?> Attributes;
 

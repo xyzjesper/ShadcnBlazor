@@ -1,0 +1,34 @@
+﻿@inherits ShadcnBase
+
+@if (Slot != null)
+{
+    @Slot.Invoke(Attributes)
+}
+else
+{
+    <a @attributes="Attributes">
+        @ChildContent
+    </a>
+}
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment<Dictionary<string, object?>>? Slot { get; set; }
+
+    private Dictionary<string, object?> Attributes;
+    
+    protected override void OnParametersSet()
+    {
+        Attributes = new();
+
+        Attributes["data-slot"] = "breadcrumb-link";
+        Attributes["class"] = Cn("hover:text-foreground transition-colors", ClassName);
+        
+        if(Props == null)
+            return;
+
+        foreach (var prop in Props)
+            Attributes[prop.Key] = prop.Value;
+    }
+}

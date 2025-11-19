@@ -1,0 +1,20 @@
+﻿@inherits ShadcnBase
+
+<li data-slot="breadcrumb-item" class="@Classes" @attributes="Props">
+    @ChildContent
+</li>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "inline-flex items-center gap-1.5",
+            ClassName
+        );
+    }
+}

@@ -1,0 +1,26 @@
+﻿@inherits ShadcnBase
+
+<span
+    data-slot="breadcrumb-page"
+    role="link"
+    aria-disabled="true"
+    aria-current="page"
+    class="@Classes"
+    @attributes="Props">
+    @ChildContent
+</span>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "text-foreground font-normal",
+            ClassName
+        );
+    }
+}

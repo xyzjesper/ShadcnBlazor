@@ -1,0 +1,17 @@
+﻿@inherits ShadcnBase
+
+<nav aria-label="breadcrumb" data-slot="breadcrumb" class="@Classes" @attributes="Props">
+    @ChildContent
+</nav>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(ClassName);
+    }
+}
