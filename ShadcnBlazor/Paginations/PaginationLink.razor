@@ -1,0 +1,20 @@
+@using ShadcnBlazor.Buttons
+
+@inherits ShadcnBase
+
+<Button Size="Size" ClassName="@ClassName" Variant="@(IsActive ? ButtonVariant.Outline : ButtonVariant.Ghost)" @attributes="Props">
+    <Slot>
+        <a aria-current="@(IsActive ? "page" : "undefined")"
+           data-slot="pagination-link"
+           data-active="@IsActive.ToString()" @attributes="context">
+            @ChildContent
+        </a>
+    </Slot>
+</Button>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool IsActive { get; set; }
+    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Icon;
+}

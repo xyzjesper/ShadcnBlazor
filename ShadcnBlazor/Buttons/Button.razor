@@ -15,7 +15,7 @@ else
 {
     [Parameter] public RenderFragment ChildContent { get; set; }
     [Parameter] public RenderFragment<Dictionary<string, object?>>? Slot { get; set; }
-    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Md;
+    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Default;
     [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Default;
     [Parameter] public string Type { get; set; } = "button";
     
@@ -62,7 +62,7 @@ else
         return Size switch
         {
             ButtonSize.Sm => "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
-            ButtonSize.Md => "h-9 px-4 py-2 has-[>svg]:px-3",
+            ButtonSize.Default => "h-9 px-4 py-2 has-[>svg]:px-3",
             ButtonSize.Lg => "h-10 rounded-md px-6 has-[>svg]:px-4",
             ButtonSize.IconSm => "size-8",
             ButtonSize.Icon => "size-9",

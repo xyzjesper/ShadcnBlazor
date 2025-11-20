@@ -1,0 +1,21 @@
+@inherits ShadcnBase
+
+<nav role="navigation"
+     aria-label="pagination"
+     data-slot="pagination"
+     class="@Classes"
+     @attributes="Props">
+    @ChildContent
+</nav>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn("mx-auto flex w-full justify-center", ClassName);
+    }
+}

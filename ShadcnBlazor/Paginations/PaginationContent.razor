@@ -1,0 +1,19 @@
+@inherits ShadcnBase
+
+<ul data-slot="pagination-content"
+    class="@Classes"
+    @attributes="Props">
+    @ChildContent
+</ul>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn("flex flex-row items-center gap-1", ClassName);
+    }
+}
