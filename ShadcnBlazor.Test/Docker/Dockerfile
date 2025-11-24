@@ -37,6 +37,8 @@ RUN dotnet publish "./ShadcnBlazor.Test.csproj" -c $BUILD_CONFIGURATION -o /app/
 
 FROM base AS final
 
+LABEL org.opencontainers.image.source=https://github.com/ChiaraBm/ShadcnBlazor
+
 # Copy over compiled application
 COPY --from=publish /app/publish/wwwroot/ /usr/share/nginx/html
 
