@@ -4,7 +4,7 @@
      data-state="@(IsActive ? "active" : "inactive")"
      class="@Classes"
      @attributes="Props"
-     hidden="@IsActive">
+     hidden="@(!IsActive)">
     @ChildContent
 </div>
 

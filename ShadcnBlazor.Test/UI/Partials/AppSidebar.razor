@@ -13,7 +13,7 @@
         <SidebarMenu>
             <SidebarMenuItem>
                 <SidebarMenuButton
-                    ClassName="data-[slot=sidebar-menu-button]:!p-1.5">
+                    ClassName="data-[slot=sidebar-menu-button]:p-1.5!">
                     <a href="#" class="flex flex-row items-center">
                         <i class="icon-blocks text-xl"></i>
                         <span class="ms-1 text-base font-semibold">ShadCnBlazor</span>
@@ -25,12 +25,14 @@
         
     <SidebarContent>
         <SidebarGroup>
-            <SidebarGroupLabel>Application</SidebarGroupLabel>
+            <SidebarGroupLabel>Fancy Group</SidebarGroupLabel>
             <SidebarGroupContent>
                 <SidebarMenu>
                     @foreach (var item in Items)
                     {
-                        var isActive = item.Path.Equals(url.LocalPath, StringComparison.OrdinalIgnoreCase);
+                        var isActive = item.IsExactPath
+                            ? item.Path == url.LocalPath
+                            : url.LocalPath.StartsWith(item.Path, StringComparison.OrdinalIgnoreCase);
                             
                         <SidebarMenuItem @key="item">
                             <SidebarMenuButton IsActive="@isActive">
@@ -58,58 +60,25 @@
         Items.AddRange([
             new()
             {
-                Name = "Buttons",
-                Icon = "icon-square-power",
-                Path = "/"
+                Name = "Overview",
+                Icon = "icon-layout-dashboard",
+                Path = "/",
+                IsExactPath = true
             },
             new()
             {
-                Name = "Empty State",
-                Icon = "icon-box",
-                Path = "/empty"
+                Name = "Installation",
+                Icon = "icon-wrench",
+                Path = "/installation",
+                IsExactPath = true
             },
             new()
             {
-                Name = "Input",
-                Icon = "icon-clipboard-type",
-                Path = "/input"
+                Name = "Components",
+                Icon = "icon-shapes",
+                Path = "/components",
+                IsExactPath = false
             },
-            new()
-            {
-                Name = "Alert",
-                Icon = "icon-triangle-alert",
-                Path = "/alert"
-            },
-            new()
-            {
-                Name = "Badge",
-                Icon = "icon-badge",
-                Path = "/badge"
-            },
-            new()
-            {
-                Name = "Dialog",
-                Icon = "icon-message-square-text",
-                Path = "/dialog"
-            },
-            new()
-            {
-                Name = "Kbd",
-                Icon = "icon-keyboard",
-                Path = "/kbd"
-            },
-            new()
-            {
-                Name = "Tabs",
-                Icon = "icon-square-stack",
-                Path = "/tabs"
-            },
-            new()
-            {
-                Name = "Items",
-                Icon = "icon-box",
-                Path = "/items"
-            }
         ]);
         
         Navigation.LocationChanged += OnLocationChanged;
@@ -132,6 +101,7 @@
         public string Name { get; set; }
         public string Icon { get; set; }
         public string Path { get; set; }
+        public bool IsExactPath { get; set; }
     }
 
     public void Dispose()

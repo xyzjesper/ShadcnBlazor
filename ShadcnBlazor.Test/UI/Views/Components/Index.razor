@@ -1,0 +1,121 @@
+﻿@page "/components"
+@using ShadcnBlazor.Items
+
+<h1 class="text-xl font-semibold">Components</h1>
+<div class="text-muted-foreground">
+    Here you can find all the components available in the library. We are working on porting more components.
+</div>
+
+<div class="grid grid-col-3 md:grid-cols-4 2xl:grid-cols-6 gap-8 mt-8 w-fit">
+    @foreach (var item in Items)
+    {
+        <div class="col-span-1 flex justify-start">
+            
+            @if (item.InProgress)
+            {
+                <Item Variant="ItemVariant.Outline" Size="ItemSize.Sm" ClassName="pointer-events-none opacity-50 w-full">
+                    <Slot>
+                        <div @attributes="context">
+                            <ItemContent>
+                                <ItemTitle>@item.Name</ItemTitle>
+                            </ItemContent>
+                            <ItemActions>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right size-4"><path d="m9 18 6-6-6-6"/></svg>
+                            </ItemActions>
+                        </div>
+                    </Slot>
+                </Item>
+            }
+            else
+            {
+                <Item Variant="ItemVariant.Outline" Size="ItemSize.Sm" ClassName="w-full">
+                    <Slot>
+                        <a href="/components/@item.Url" @attributes="context">
+                            <ItemContent>
+                                <ItemTitle>@item.Name</ItemTitle>
+                            </ItemContent>
+                            <ItemActions>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right size-4"><path d="m9 18 6-6-6-6"/></svg>
+                            </ItemActions>
+                        </a>
+                    </Slot>
+                </Item>
+            }
+        </div>
+    }
+</div>
+
+@code
+{
+    private readonly List<ComponentItem> Items =
+    [
+        new(false, "accordion", "Accordion"),
+        new(true, "alertDialog", "Alert Dialog"),
+        new(false, "alert", "Alert"),
+        new(true, "aspectRatio", "Aspect Ratio"),
+        new(true, "avatar", "Avatar"),
+        new(false, "badge", "Badge"),
+        new(false, "breadcrumb", "Breadcrumb"),
+        new(false, "buttonGroup", "Button Group"),
+        new(false, "button", "Button"),
+        new(true, "calendar", "Calendar"),
+        new(false, "card", "Card"),
+        new(true, "carousel", "Carousel"),
+        new(true, "chart", "Chart"),
+        new(false, "checkbox", "Checkbox"),
+        new(true, "collapsible", "Collapsible"),
+        new(true, "combobox", "Combobox"),
+        new(true, "contextMenu", "Context Menu"),
+        new(true, "dataTable", "Data Table"),
+        new(true, "datePicker", "Date Picker"),
+        new(false, "dialog", "Dialog"),
+        new(true, "drawer", "Drawer"),
+        new(false, "dropdownMenu", "Dropdown Menu"),
+        new(false, "empty", "Empty"),
+        new(true, "field", "Field"),
+        new(true, "form", "Form"),
+        new(true, "hoverCard", "Hover Card"),
+        new(false, "inputGroup", "Input Group"),
+        new(true, "inputOtp", "Input OTP"),
+        new(false, "input", "Input"),
+        new(false, "item", "Item"),
+        new(false, "kbd", "Kbd"),
+        new(false, "label", "Label"),
+        new(true, "menubar", "Menubar"),
+        new(true, "nativeSelect", "Native Select"),
+        new(true, "navigationMenu", "Navigation Menu"),
+        new(false, "pagination", "Pagination"),
+        new(false, "popover", "Popover"),
+        new(false, "progress", "Progress"),
+        new(false, "radioGroup", "Radio Group"),
+        new(false, "resizeable", "Resizable"),
+        new(true, "scrollArea", "Scroll Area"),
+        new(true, "select", "Select"),
+        new(false, "separator", "Separator"),
+        new(true, "sheet", "Sheet"),
+        new(false, "skeleton", "Skeleton"),
+        new(true, "slider", "Slider"),
+        new(true, "sonner", "Sonner"),
+        new(false, "spinner", "Spinner"),
+        new(true, "table", "Table"),
+        new(false, "tabs", "Tabs"),
+        new(false, "textarea", "Textarea"),
+        new(true, "toggleGroup", "Toggle Group"),
+        new(false, "toggle", "Toggle"),
+        new(true, "tooltip", "Tooltip"),
+    ];
+    
+    record ComponentItem
+    {
+        public ComponentItem(bool inProgress, string url, string name)
+        {
+            InProgress = inProgress;
+            Url = url;
+            Name = name;
+        }
+        
+        public bool InProgress { get; set; }
+        public string Url { get; set; }
+        public string Name { get; set; }
+    }
+}

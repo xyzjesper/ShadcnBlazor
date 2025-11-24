@@ -1,0 +1,51 @@
+﻿@using ShadcnBlazor.Spinners
+
+@typeparam T where T : ComponentBase
+
+<div class="border border-card-foreground/10 rounded-lg">
+    <div class="h-96 overflow-y-scroll border-b border-b-card-foreground/10 py-8 px-12 scrollbar-thin">
+        <DynamicComponent Type="typeof(T)" />
+    </div>
+    <div class="h-96 overflow-y-scroll scrollbar-thin @(ContentLoaded ? "" : "flex justify-center items-center")">
+        @if (ContentLoaded)
+        {
+            <Highlight Content="@Content" />
+        }
+        else
+        {
+            <Spinner ClassName="size-10" />
+        }
+    </div>
+</div>
+
+@code
+{
+    private string Content;
+    private bool ContentLoaded = false;
+    private bool ContentLoadedFailed = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(!firstRender)
+            return;
+
+        await LoadSourceCodeAsync();
+    }
+
+    private async Task LoadSourceCodeAsync()
+    {
+        return;
+        
+        try
+        {
+            ContentLoaded = true;
+        }
+        catch (Exception e)
+        {
+            Content = e.ToString();
+            ContentLoadedFailed = true;
+        }
+
+        await InvokeAsync(StateHasChanged);
+    }
+}

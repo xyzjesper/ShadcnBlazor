@@ -9,19 +9,6 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.9"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.9" PrivateAssets="all"/>
-        <PackageReference Include="TailwindMerge.NET" Version="1.2.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="wwwroot\css\app.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
-      <_ContentIncludedByDefault Remove="UI\Abc\Comp1.razor" />
-      <_ContentIncludedByDefault Remove="UI\Components\Checkbox.razor" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <AdditionalFiles Include="UI\Partials\MainLayout.razor" />
-      <AdditionalFiles Include="UI\Views\Home.razor" />
     </ItemGroup>
 
     <ItemGroup>
