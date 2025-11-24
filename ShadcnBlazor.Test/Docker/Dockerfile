@@ -1,9 +1,9 @@
-﻿FROM nginx:alpine AS base
+﻿FROM cgr.dev/chainguard/nginx AS base
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 
 # Install nodejs and npm for building tailwind styles
-RUN apt update; apt install nodejs npm
+RUN apt update; apt install nodejs npm -y
 
 # Install nuget packages
 ARG BUILD_CONFIGURATION=Release
@@ -41,4 +41,4 @@ FROM base AS final
 COPY --from=publish /app/publish/wwwroot/ /usr/share/nginx/html
 
 # Copy single page app nginx config
-COPY ShadcnBlazor/ShadcnBlazor.Test/Docker/nginx.conf /etc/nginx/nginx.conf
+COPY ShadcnBlazor.Test/Docker/nginx.conf /etc/nginx/nginx.conf
