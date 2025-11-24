@@ -4,6 +4,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,6 +14,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ShadcnBlazor\ShadcnBlazor.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>Docker\.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

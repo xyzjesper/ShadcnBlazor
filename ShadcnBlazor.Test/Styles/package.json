@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tailwind": "npx postcss styles.css -o ../wwwroot/style.min.css --watch"
+    "tailwind": "npx postcss styles.css -o ../wwwroot/style.min.css --watch",
+    "tailwind-build": "npx postcss styles.css -o ../wwwroot/style.min.css"
   },
   "author": "",
   "license": "ISC",
