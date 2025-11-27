@@ -14,6 +14,7 @@
         <RepositoryUrl>https://github.com/ChiaraBm/ShadcnBlazor</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>shadcn,blazor</PackageTags>
+        <Version>1.0.1</Version>
     </PropertyGroup>
 
 

@@ -1,0 +1,33 @@
+﻿name: Automatic package publishing
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "ShadcnBlazor/**.csproj"
+    branches:
+      - main
+
+jobs:
+  
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      # Setup dotnet 9
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 9.0
+      
+      # Run the publishing action
+      - name: Publish on version change
+        uses: alirezanet/publish-nuget@v3.1.0
+        with:
+          PROJECT_FILE_PATH: ShadcnBlazor/ShadcnBlazor.csproj
+          TAG_COMMIT: false
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
