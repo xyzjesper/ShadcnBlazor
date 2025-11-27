@@ -13,7 +13,7 @@
 ShadcnBlazor aims to bring the developer-friendly, elegant, and flexible shadcn/ui component style into the Blazor ecosystem.
 
 - **Familiar** – Staying as close to the original shadcn/ui concepts as Blazor allows
-- **Easy to use** – Includes a Tailwind plugin to simplify installation and component setup
+- **Easy to use** – Includes a npm package to simplify installation and component setup
 - **Components** – Shadcn's base components and in the future additional components ontop of the base components
 - **Open for Contributions** – MIT-licensed and community contributions welcome
 
