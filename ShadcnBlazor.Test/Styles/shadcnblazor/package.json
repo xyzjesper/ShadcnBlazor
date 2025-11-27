@@ -1,0 +1,23 @@
+{
+  "name": "shadcnblazor",
+  "version": "1.0.1",
+  "description": "ShadcnBlazor helper tailwind plugin",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChiaraBm/ShadcnBlazor.git"
+  },
+  "keywords": [
+    "blazor",
+    "shadcn"
+  ],
+  "author": "ChiaraBm",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ChiaraBm/ShadcnBlazor/issues"
+  },
+  "homepage": "https://github.com/ChiaraBm/ShadcnBlazor#readme"
+}

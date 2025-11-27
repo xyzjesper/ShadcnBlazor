@@ -1,0 +1,32 @@
+﻿name: Demo Website
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "ShadcnBlazor*/**"
+    branches:
+      - main
+
+jobs:
+  
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+          with:
+            node-version: "24"
+            
+      - run: npm i
+        working-directory: ShadcnBlazor.Test/Styles
+        
+      - run: npm run tailwind-plugin
+        working-directory: ShadcnBlazor.Test/Styles
+
+      - uses: JS-DevTools/npm-publish@v4
+          with:
+            token: ${{ secrets.NPM_TOKEN }}
+            package: "ShadcnBlazor.Test/Styles/shadcnblazor"
