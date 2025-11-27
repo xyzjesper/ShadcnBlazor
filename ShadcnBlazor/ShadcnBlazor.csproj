@@ -4,6 +4,16 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <Title>ShadcnBlazor</Title>
+        <Authors>ChiaraBm</Authors>
+        <Description>A port of shadcn to blazor</Description>
+        <Copyright>ChiaraBm</Copyright>
+        <PackageProjectUrl>https://github.com/ChiaraBm/ShadcnBlazor</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/ChiaraBm/ShadcnBlazor/blob/main/LICENSE.md</PackageLicenseUrl>
+        <PackageIcon>logo.png</PackageIcon>
+        <RepositoryUrl>https://github.com/ChiaraBm/ShadcnBlazor</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>shadcn,blazor</PackageTags>
     </PropertyGroup>
 
 
@@ -18,5 +28,13 @@
 
     <ItemGroup>
       <Folder Include="wwwroot\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\Assets\logo.png">
+        <Pack>True</Pack>
+        <PackagePath>/</PackagePath>
+        <Link>logo.png</Link>
+      </None>
     </ItemGroup>
 </Project>
