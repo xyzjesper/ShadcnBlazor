@@ -22,13 +22,16 @@ else
     {
         Attributes = new();
 
-        Attributes["data-state"] = Collapsible.IsOpen.ToString().ToLower();
+        Attributes["data-state"] = Collapsible.IsOpen ? "open" : "closed";
         Attributes["data-disabled"] = Collapsible.Disabled;
         Attributes["onclick"] = EventCallback.Factory.Create(this, OnClickAsync);
     }
 
     private async Task OnClickAsync()
     {
+        if(Collapsible.Disabled)
+            return;
+        
         await Collapsible.ToggleAsync();
     }
 }
