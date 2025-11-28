@@ -1,0 +1,45 @@
+﻿<CascadingValue TValue="Tooltip" IsFixed="true" Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool DefaultOpen { get; set; }
+    
+    public bool Open { get; private set; }
+    public bool ShouldRenderContent { get; private set; }
+    
+    internal TooltipContent Content { get; set; }
+    internal TooltipTrigger Trigger { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        Open = DefaultOpen;
+        ShouldRenderContent = DefaultOpen;
+    }
+
+    public async Task OpenAsync()
+    {
+        Open = true;
+        ShouldRenderContent = true;
+
+        await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
+        {
+            await Content.OnOpenedAsync();
+        });
+    }
+    
+    public async Task CloseAsync()
+    {
+        Open = false;
+
+        await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
+        {
+            await Task.Delay(50);
+            
+            ShouldRenderContent = false;
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+}

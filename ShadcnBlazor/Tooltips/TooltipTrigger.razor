@@ -1,0 +1,42 @@
+﻿@using ShadcnBlazor.Buttons
+
+@inherits ShadcnBase
+
+@if (Slot != null)
+{
+    <span @ref="TriggerElement">
+        @Slot.Invoke(Attributes)
+    </span>
+}
+else
+{
+    <Button ClassName="@ClassName">
+        <Slot>
+            <button @ref="TriggerElement" type="button" @attributes="context.Concat(Attributes)">
+                @ChildContent
+            </button>
+        </Slot>
+    </Button>
+}
+
+@code
+{
+    [CascadingParameter] public Tooltip Context { get; set; }
+    
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment<Dictionary<string, object?>>? Slot { get; set; }
+    
+    internal ElementReference TriggerElement { get; private set; }
+    
+    private Dictionary<string, object?> Attributes = new();
+
+    protected override void OnParametersSet()
+    {
+        Context.Trigger = this;
+        
+        Attributes = new();
+        
+        Attributes["onmouseenter"] = EventCallback.Factory.Create(this, () => Context.OpenAsync());
+        Attributes["onmouseleave"] = EventCallback.Factory.Create(this, () => Context.CloseAsync());
+    }
+}
