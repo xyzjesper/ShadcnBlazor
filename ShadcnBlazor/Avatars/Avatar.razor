@@ -1,0 +1,30 @@
+﻿@inherits ShadcnBase
+
+<div data-slot="avatar" class="@Classes">
+    <CascadingValue TValue="Avatar" IsFixed="true" Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    
+    internal bool IsLoaded { get; set; } = false;
+    
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "relative flex size-8 shrink-0 overflow-hidden rounded-full",
+            ClassName
+        );
+    }
+
+    public async Task OnLoadedAsync()
+    {
+        IsLoaded = true;
+        await InvokeAsync(StateHasChanged);
+    }
+}

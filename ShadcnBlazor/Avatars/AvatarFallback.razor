@@ -1,0 +1,25 @@
+﻿@inherits ShadcnBase
+
+<div data-slot="avatar-fallback"
+     class="@Classes"
+     style="display: @(Avatar.IsLoaded ? "none" : "flex")"
+     @attributes="Props">
+    @ChildContent
+</div>
+
+@code
+{
+    [CascadingParameter] public Avatar Avatar { get; set; }
+    
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "bg-muted flex size-full items-center justify-center rounded-full",
+            ClassName
+        );
+    }
+}

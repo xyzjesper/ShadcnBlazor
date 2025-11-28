@@ -1,0 +1,26 @@
+﻿@inherits ShadcnBase
+
+<img data-slot="avatar-image"
+     class="@Classes"
+     @onload="OnLoadedAsync"
+     style="display: @(Avatar.IsLoaded ? "block" : "none")"
+     @attributes="Props"/>
+
+@code
+{
+    [CascadingParameter] public Avatar Avatar { get; set; }
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "aspect-square size-full"
+        );
+    }
+
+    private async Task OnLoadedAsync()
+    {
+        await Avatar.OnLoadedAsync();
+    }
+}
