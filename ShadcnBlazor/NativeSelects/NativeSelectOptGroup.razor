@@ -1,0 +1,19 @@
+﻿@inherits ShadcnBase
+
+<optgroup
+    data-slot="native-select-optgroup"
+    class="@Classes">
+    @ChildContent
+</optgroup>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(ClassName);
+    }
+}

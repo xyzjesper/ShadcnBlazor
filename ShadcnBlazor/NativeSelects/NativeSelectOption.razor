@@ -1,0 +1,10 @@
+﻿@inherits ShadcnBase
+
+<option class="@ClassName" data-slot="native-select-option" @attributes="Props">
+    @ChildContent
+</option>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}
