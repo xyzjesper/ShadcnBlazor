@@ -26,18 +26,13 @@ else
 
         Attributes["aria-haspopup"] = "dialog";
         Attributes["aria-expanded"] = Parent.IsOpen.ToString().ToLower();
-        Attributes["data-state"] = Parent.IsOpen.ToString().ToLower();
-        Attributes["onclick"] = EventCallback.Factory.Create(this, HandleClickAsync);
+        Attributes["data-state"] = Parent.IsOpen ? "open" : "closed";
+        Attributes["onclick"] = EventCallback.Factory.Create(this, () => Parent.OpenAsync());
         
         if(Props == null)
             return;
 
         foreach (var prop in Props)
             Attributes[prop.Key] = prop.Value;
-    }
-
-    private async Task HandleClickAsync()
-    {
-        await Parent.OpenAsync();
     }
 }
