@@ -1,0 +1,26 @@
+﻿@inherits ShadcnBase
+
+<div data-slot="collapsible-content"
+     data-disabled="@Collapsible.Disabled"
+     data-state="@(Collapsible.IsOpen ? "open" : "closed")"
+     hidden="@(!Collapsible.ShouldRenderContent)"
+     class="@Classes"
+     @attributes="Props">
+    @if (Collapsible.ShouldRenderContent)
+    {
+        @ChildContent
+    }
+</div>
+
+@code
+{
+    [CascadingParameter] public Collapsible Collapsible { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(ClassName);
+    }
+}
