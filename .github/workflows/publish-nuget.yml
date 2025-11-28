@@ -1,4 +1,4 @@
-﻿name: Automatic package publishing
+﻿name: "Nuget: publish"
 
 on:
   workflow_dispatch:

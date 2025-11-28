@@ -1,4 +1,4 @@
-name: Demo Website
+name: "Demo: publish"
 
 on:
   workflow_dispatch:
