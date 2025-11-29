@@ -1,0 +1,65 @@
+@using Microsoft.AspNetCore.Components.Sections
+
+@implements IContextMenuParent
+
+<CascadingValue TValue="ContextMenu" IsFixed="true" Value="this">
+    @ChildContent
+</CascadingValue>
+
+<SectionOutlet SectionName="@ContentOutletId" />
+<SectionOutlet SectionName="@SubContentOutletId" />
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    
+    public bool IsOpen { get; private set; }
+    internal bool ShouldRenderContent { get; private set; }
+
+    internal double ClientX { get; private set; }
+    internal double ClientY { get; private set; }
+
+    internal string ContentOutletId => $"context-menu-content-{GetHashCode()}";
+    internal string SubContentOutletId => $"context-menu-subcontent-{GetHashCode()}";
+
+    internal ContextMenuContent Content { get; set; }
+
+    private IContextMenuItem? FocusedItem;
+    
+    public async Task OpenAsync(double x, double y)
+    {
+        ClientX = x;
+        ClientY = y;
+
+        IsOpen = true;
+        ShouldRenderContent = true;
+
+        await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
+        {
+            await Content.OnOpenStateChangedAsync();
+        });
+    }
+
+    public async Task CloseAsync()
+    {
+        IsOpen = false;
+        
+        await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
+        {
+            await Task.Delay(100);
+            
+            ShouldRenderContent = false;
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+
+    public async Task ChangeFocusAsync(IContextMenuItem item)
+    {
+        if (FocusedItem != null && FocusedItem != item)
+            await FocusedItem.OnUnfocusAsync();
+
+        FocusedItem = item;
+    }
+
+    public Task CloseMenuAsync() => CloseAsync();
+}

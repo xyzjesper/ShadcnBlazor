@@ -1,0 +1,37 @@
+@using ShadcnBlazor.ContextMenus
+
+<ContextMenu>
+    <ContextMenuTrigger ClassName="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed text-sm">
+        Right click here
+    </ContextMenuTrigger>
+    <ContextMenuContent ClassName="w-52">
+        <ContextMenuItem>
+            Back
+            <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem Disabled="true">
+            Forward
+            <ContextMenuShortcut>⌘]</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem>
+            Reload
+            <ContextMenuShortcut>⌘R</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuSub>
+            <ContextMenuSubTrigger>More Tools</ContextMenuSubTrigger>
+            <ContextMenuSubContent ClassName="w-44">
+                <ContextMenuItem>Save Page...</ContextMenuItem>
+                <ContextMenuItem>Create Shortcut...</ContextMenuItem>
+                <ContextMenuItem>Name Window...</ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuItem>Developer Tools</ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuItem Variant="ContextMenuItemVariant.Destructive">Delete</ContextMenuItem>
+            </ContextMenuSubContent>
+        </ContextMenuSub>
+        <ContextMenuSeparator />
+        <ContextMenuItem>Not yet implemented</ContextMenuItem>
+        <ContextMenuSeparator />
+        <ContextMenuItem>Not yet implemented</ContextMenuItem>
+    </ContextMenuContent>
+</ContextMenu>

@@ -1,0 +1,57 @@
+@implements IContextMenuParent
+@implements IContextMenuItem
+
+<CascadingValue TValue="ContextMenuSub" IsFixed="true" Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code
+{
+    [CascadingParameter] public IContextMenuParent Parent { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    public bool IsOpen => Parent.IsOpen && IsFocused;
+    internal bool ShouldRenderContent { get; set; }
+    
+    internal ContextMenuSubContent Content { get; set; }
+    internal ContextMenuSubTrigger Trigger { get; set; }
+    
+    private bool IsFocused;
+    private IContextMenuItem? FocusedItem;
+    
+    public async Task OnFocusAsync()
+    {
+        await Parent.ChangeFocusAsync(this);
+
+        IsFocused = true;
+        ShouldRenderContent = true;
+
+        await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
+        {
+            await Content.OnOpenedAsync();
+        });
+    }
+
+    public async Task ChangeFocusAsync(IContextMenuItem item)
+    {
+        if (FocusedItem != null && FocusedItem != item)
+            await FocusedItem.OnUnfocusAsync();
+
+        FocusedItem = item;
+    }
+
+    public Task CloseMenuAsync() => Parent.CloseMenuAsync();
+    
+    public async Task OnUnfocusAsync()
+    {
+        IsFocused = false;
+        
+        await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
+        {
+            await Task.Delay(100);
+
+            ShouldRenderContent = false;
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+}

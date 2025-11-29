@@ -1,0 +1,28 @@
+@if (Slot != null)
+{
+    <span @oncontextmenu="OnContextMenuAsync" @oncontextmenu:preventDefault>
+        @Slot
+    </span>
+}
+else
+{
+    <div @oncontextmenu="OnContextMenuAsync" @oncontextmenu:preventDefault class="@ClassName" @attributes="Attributes">
+        @ChildContent
+    </div>
+}
+
+@code
+{
+    [CascadingParameter] public ContextMenu ContextMenu { get; set; }
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment? Slot { get; set; }
+    [Parameter] public string? ClassName { get; set; }
+
+    private Dictionary<string, object?> Attributes;
+
+    private async Task OnContextMenuAsync(MouseEventArgs args)
+    {
+        await ContextMenu.OpenAsync(args.ClientX, args.ClientY);
+    }
+}

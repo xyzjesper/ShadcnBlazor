@@ -65,7 +65,7 @@
         new(false, "checkbox", "Checkbox"),
         new(false, "collapsible", "Collapsible"),
         new(true, "combobox", "Combobox"),
-        new(true, "contextMenu", "Context Menu"),
+        new(false, "contextMenu", "Context Menu"),
         new(true, "dataTable", "Data Table"),
         new(true, "datePicker", "Date Picker"),
         new(false, "dialog", "Dialog"),
@@ -104,18 +104,6 @@
         new(false, "toggle", "Toggle"),
         new(false, "tooltip", "Tooltip"),
     ];
-    
-    record ComponentItem
-    {
-        public ComponentItem(bool inProgress, string url, string name)
-        {
-            InProgress = inProgress;
-            Url = url;
-            Name = name;
-        }
-        
-        public bool InProgress { get; set; }
-        public string Url { get; set; }
-        public string Name { get; set; }
-    }
+
+    record ComponentItem(bool InProgress, string Url, string Name);
 }

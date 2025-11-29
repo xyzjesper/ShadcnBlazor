@@ -1,0 +1,24 @@
+@inherits ShadcnBase
+
+<div data-slot="context-menu-label"
+     data-inset="@Inset"
+     class="@Classes"
+     @attributes="Props">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool Inset { get; set; }
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "text-foreground px-2 py-1.5 text-sm font-medium data-[inset]:pl-8",
+            ClassName
+        );
+    }
+}

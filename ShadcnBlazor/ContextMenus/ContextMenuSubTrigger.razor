@@ -1,0 +1,41 @@
+@inherits ShadcnBase
+
+<div data-slot="context-menu-sub-trigger"
+     data-inset="@Inset"
+     data-state="@(Sub.IsOpen ? "open" : "closed")"
+     class="@Classes"
+     tabindex="-1"
+     @onfocus="Sub.OnFocusAsync"
+     onmouseover="this.focus()"
+     @ref="TriggerElement"
+     @attributes="Props">
+    @ChildContent
+    
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right ml-auto"><path d="m9 18 6-6-6-6"/></svg>
+</div>
+
+@code
+{
+    [CascadingParameter] public ContextMenuSub Sub { get; set; }
+    
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool Inset { get; set; }
+
+    internal ElementReference TriggerElement { get; set; }
+
+    private string? Classes;
+    
+    protected override void OnInitialized()
+    {
+        Sub.Trigger = this;
+    }
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground flex cursor-default items-center rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+            "hover:cursor-pointer",
+            ClassName
+        );
+    }
+}
