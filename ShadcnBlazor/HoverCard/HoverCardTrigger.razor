@@ -1,0 +1,19 @@
+@inherits ShadcnBase
+
+<div data-slot="hover-card-trigger"
+     data-state="@(HoverCard.IsOpen ? "open" : "closed")"
+     class="@ClassName"
+     @attributes="Props"
+     @onmouseenter="MouseEnterAsync"
+     @onmouseleave="MouseLeaveAsync"
+>
+    @ChildContent
+</div>
+
+@code {
+    [CascadingParameter] public HoverCard HoverCard { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private async Task MouseEnterAsync() => await HoverCard.OnOpenChangeAsync(true);
+    private async Task MouseLeaveAsync() => await HoverCard.OnOpenChangeAsync(false);
+}

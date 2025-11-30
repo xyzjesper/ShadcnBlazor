@@ -1,0 +1,49 @@
+@inherits ShadcnBase
+
+<div data-slot="hover-card"
+     @attributes="Props"
+     class="@ClassName"
+>
+    <CascadingValue Value="this" IsFixed="true">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool IsDefaultOpen { get; set; } = false;
+
+    private int OpenCounter = 0;
+    public bool IsOpen { get; private set; } = false;
+    internal bool ShouldRenderContent { get; private set; }
+
+    protected override void OnInitialized()
+    {
+        IsOpen = IsDefaultOpen;
+    }
+
+    public async Task OnOpenChangeAsync(bool state)
+    {
+        if (state) OpenCounter++;
+        else OpenCounter--;
+
+        IsOpen = OpenCounter > 0;
+
+        if (OpenCounter > 0)
+        {
+            ShouldRenderContent = true;
+            await InvokeAsync(StateHasChanged);
+        }
+        else
+        {
+            await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
+            {
+                await Task.Delay(100);
+
+                ShouldRenderContent = false;
+                await InvokeAsync(StateHasChanged);
+            });
+        }
+    }
+}
