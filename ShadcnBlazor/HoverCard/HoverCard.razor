@@ -1,49 +1,78 @@
-@inherits ShadcnBase
-
-<div data-slot="hover-card"
-     @attributes="Props"
-     class="@ClassName"
->
-    <CascadingValue Value="this" IsFixed="true">
-        @ChildContent
-    </CascadingValue>
-</div>
+<CascadingValue TValue="HoverCard" Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
 
 @code
 {
     [Parameter] public RenderFragment ChildContent { get; set; }
-    [Parameter] public bool IsDefaultOpen { get; set; } = false;
+    [Parameter] public bool DefaultOpen { get; set; } = false;
+    [Parameter] public int OpenDelay { get; set; } = 300;
+    [Parameter] public int CloseDelay { get; set; } = 700;
 
-    private int OpenCounter = 0;
     public bool IsOpen { get; private set; } = false;
     internal bool ShouldRenderContent { get; private set; }
+    
+    internal HoverCardTrigger Trigger { get; set; }
+    internal HoverCardContent Content { get; set; }
+
+    private CancelDebouncer CloseDebouncer;
+    private CancelDebouncer OpenDebouncer;
 
     protected override void OnInitialized()
     {
-        IsOpen = IsDefaultOpen;
+        IsOpen = DefaultOpen;
+        
+        OpenDebouncer = new(TimeSpan.FromMilliseconds(OpenDelay));
+        CloseDebouncer = new(TimeSpan.FromMilliseconds(CloseDelay));
     }
 
-    public async Task OnOpenChangeAsync(bool state)
+    public async Task OpenAsync()
     {
-        if (state) OpenCounter++;
-        else OpenCounter--;
+        IsOpen = true;
+        ShouldRenderContent = true;
 
-        IsOpen = OpenCounter > 0;
-
-        if (OpenCounter > 0)
+        await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
         {
-            ShouldRenderContent = true;
+            await Content.OnOpenedAsync();
+        });
+    }
+
+    public async Task CloseAsync()
+    {
+        IsOpen = false;
+        
+        await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
+        {
+            await Task.Delay(100);
+
+            ShouldRenderContent = false;
             await InvokeAsync(StateHasChanged);
-        }
-        else
-        {
-            await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
-            {
-                await Task.Delay(100);
+        });
+    }
 
-                ShouldRenderContent = false;
-                await InvokeAsync(StateHasChanged);
-            });
+    internal async Task OnMouseEnterAsync()
+    {
+        if (IsOpen)
+        {
+            await CloseDebouncer.CancelAsync();
+            return;
         }
+
+        if (Trigger.IsInHover || Content.IsInHover)
+            OpenDebouncer.Start(OpenAsync);
+    }
+    
+    internal async Task OnMouseLeaveAsync()
+    {
+        if (!IsOpen)
+        {
+            await OpenDebouncer.CancelAsync();
+            return;
+        }
+
+        if (Trigger.IsInHover || Content.IsInHover)
+            return;
+        
+        CloseDebouncer.Start(CloseAsync);
     }
 }
