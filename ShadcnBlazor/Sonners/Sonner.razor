@@ -1,0 +1,20 @@
+﻿@inherits ShadcnBase
+
+<li tabindex="0" class="@Classes" @attributes="Props">
+    @ChildContent
+</li>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "bg-popover rounded-lg py-3.5 px-5 border flex flex-row items-center justify-between w-fit text-sm gap-x-3.5",
+            ClassName
+        );
+    }
+}
