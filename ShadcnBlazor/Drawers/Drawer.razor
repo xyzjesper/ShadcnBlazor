@@ -1,0 +1,45 @@
+﻿<CascadingValue TValue="Drawer" IsFixed="true" Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool DefaultOpen { get; set; }
+    [Parameter] public EventCallback OnOpenChanged { get; set; }
+    [Parameter] public DrawerDirection Direction { get; set; } = DrawerDirection.Bottom;
+    
+    public bool IsOpen { get; private set; }
+    internal bool ShouldRenderContent { get; private set; }
+
+    protected override void OnInitialized()
+    {
+        IsOpen = DefaultOpen;
+        ShouldRenderContent = DefaultOpen;
+    }
+
+    public async Task OpenAsync()
+    {
+        IsOpen = true;
+        ShouldRenderContent = true;
+
+        await InvokeAsync(StateHasChanged);
+
+        await OnOpenChanged.InvokeAsync(IsOpen);
+    }
+
+    public async Task CloseAsync()
+    {
+        IsOpen = false;
+
+        await InvokeAsync(StateHasChanged).ContinueWith(async _ =>
+        {
+            await Task.Delay(100);
+
+            ShouldRenderContent = false;
+            await InvokeAsync(StateHasChanged);
+            
+            await OnOpenChanged.InvokeAsync(IsOpen);
+        });
+    }
+}

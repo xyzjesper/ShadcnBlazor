@@ -1,0 +1,66 @@
+﻿@using ShadcnBlazor.Drawers
+@using ShadcnBlazor.Buttons
+
+<Drawer>
+    <DrawerTrigger>
+        <Button Variant="ButtonVariant.Outline">Open Drawer</Button>
+    </DrawerTrigger>
+    <DrawerContent>
+        <div class="mx-auto w-full max-w-sm">
+            <DrawerHeader>
+                <DrawerTitle>Move Goal</DrawerTitle>
+                <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+            </DrawerHeader>
+            <div class="p-4 pb-0">
+                <div class="flex items-center justify-center space-x-2">
+                    <Button
+                        @onclick="() => ChangeAsync(-100)"
+                        Variant="ButtonVariant.Outline"
+                        Size="ButtonSize.Icon"
+                        ClassName="h-8 w-8 shrink-0 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus-icon lucide-minus"><path d="M5 12h14"/></svg>
+                        <span class="sr-only">Decrease</span>
+                    </Button>
+                    <div class="flex-1 text-center">
+                        <div class="text-7xl font-bold tracking-tighter">
+                            @Counter
+                        </div>
+                        <div class="text-muted-foreground text-[0.70rem] uppercase">
+                            Calories/day
+                        </div>
+                    </div>
+                    <Button
+                        @onclick="() => ChangeAsync(100)"
+                        Variant="ButtonVariant.Outline"
+                        Size="ButtonSize.Icon"
+                        ClassName="h-8 w-8 shrink-0 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                        <span class="sr-only">Increase</span>
+                    </Button>
+                </div>
+                <div class="mt-3 h-[120px]">
+
+                </div>
+            </div>
+            <DrawerFooter>
+                <Button>Submit</Button>
+                <DrawerClose>
+                    <Slot>
+                        <Button Variant="ButtonVariant.Outline" @attributes="context">Cancel</Button>
+                    </Slot>
+                </DrawerClose>
+            </DrawerFooter>
+        </div>
+    </DrawerContent>
+</Drawer>
+
+@code
+{
+    private int Counter = 200;
+
+    private async Task ChangeAsync(int diff)
+    {
+        Counter += diff;
+        await InvokeAsync(StateHasChanged);
+    }
+}

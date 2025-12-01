@@ -1,0 +1,20 @@
+﻿@inherits ShadcnBase
+
+<div data-slot="drawer-title" class="@Classes" @attributes="Props">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private string? Classes;
+
+    protected override void OnParametersSet()
+    {
+        Classes = Cn(
+            "text-foreground font-semibold",
+            ClassName
+        );
+    }
+}
