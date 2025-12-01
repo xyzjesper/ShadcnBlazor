@@ -2,7 +2,7 @@
 
 @if (Drawer.ShouldRenderContent)
 {
-    <DrawerOverlay />
+    <DrawerOverlay @onclick="Drawer.CloseAsync" />
     
     <div data-slot="drawer-content"
          class="@Classes"

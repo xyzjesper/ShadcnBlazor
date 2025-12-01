@@ -2,7 +2,8 @@
 
 <div data-slot="drawer-overlay"
      data-state="@(Drawer.IsOpen ? "open" : "closed")"
-     class="@Classes">
+     class="@Classes"
+     @attributes="Props">
 </div>
 
 @code
